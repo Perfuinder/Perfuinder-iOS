@@ -11,6 +11,11 @@
 		C52CE1272CD7952E00C6D09A /* PerfuinderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52CE1202CD7952E00C6D09A /* PerfuinderApp.swift */; };
 		C52CE1282CD7952E00C6D09A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C52CE11E2CD7952E00C6D09A /* Assets.xcassets */; };
 		C52CE1292CD7952E00C6D09A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C52CE11C2CD7952E00C6D09A /* Preview Assets.xcassets */; };
+		C578A40B2CEA217B00636B45 /* NormalSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C578A40A2CEA217B00636B45 /* NormalSearch.swift */; };
+		C59BC2002CE9EBC8009513DA /* PerfumeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BC1FF2CE9EBC8009513DA /* PerfumeInfo.swift */; };
+		C59BC2062CE9EC84009513DA /* MyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BC2052CE9EC84009513DA /* MyPage.swift */; };
+		C59BC20C2CE9F1FB009513DA /* ImageSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BC20B2CE9F1FB009513DA /* ImageSearch.swift */; };
+		C59BC20E2CE9F21A009513DA /* CustomSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BC20D2CE9F21A009513DA /* CustomSearch.swift */; };
 		C5FEB1162CDE87E8007798C5 /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FEB1152CDE87E8007798C5 /* HomeModel.swift */; };
 		C5FEB1562CE1E40F007798C5 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FEB1552CE1E40F007798C5 /* Home.swift */; };
 		C5FEB1582CE1E598007798C5 /* HomeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FEB1572CE1E598007798C5 /* HomeListCell.swift */; };
@@ -41,6 +46,11 @@
 		C52CE11E2CD7952E00C6D09A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C52CE11F2CD7952E00C6D09A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C52CE1202CD7952E00C6D09A /* PerfuinderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerfuinderApp.swift; sourceTree = "<group>"; };
+		C578A40A2CEA217B00636B45 /* NormalSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearch.swift; sourceTree = "<group>"; };
+		C59BC1FF2CE9EBC8009513DA /* PerfumeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerfumeInfo.swift; sourceTree = "<group>"; };
+		C59BC2052CE9EC84009513DA /* MyPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPage.swift; sourceTree = "<group>"; };
+		C59BC20B2CE9F1FB009513DA /* ImageSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSearch.swift; sourceTree = "<group>"; };
+		C59BC20D2CE9F21A009513DA /* CustomSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearch.swift; sourceTree = "<group>"; };
 		C5FDC9CF2CCEA22900DD23F0 /* Perfuinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Perfuinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FDC9DF2CCEA22B00DD23F0 /* PerfuinderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerfuinderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FDC9E92CCEA22B00DD23F0 /* PerfuinderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerfuinderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,8 +134,94 @@
 		C52CE12B2CD7956A00C6D09A /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				C59BC20A2CE9F1E2009513DA /* Model */,
+				C59BC2092CE9F1DE009513DA /* View */,
+				C59BC2082CE9F1D7009513DA /* ViewModel */,
+				C59BC2072CE9F1D2009513DA /* Helper */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		C59BC1FC2CE9EB94009513DA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C59BC1FD2CE9EB9B009513DA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C59BC1FF2CE9EBC8009513DA /* PerfumeInfo.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C59BC1FE2CE9EB9F009513DA /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C59BC2012CE9EC5E009513DA /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		C59BC2022CE9EC6B009513DA /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C59BC2032CE9EC6F009513DA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C59BC2052CE9EC84009513DA /* MyPage.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C59BC2042CE9EC73009513DA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C59BC2072CE9F1D2009513DA /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		C59BC2082CE9F1D7009513DA /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C59BC2092CE9F1DE009513DA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C59BC20B2CE9F1FB009513DA /* ImageSearch.swift */,
+				C59BC20D2CE9F21A009513DA /* CustomSearch.swift */,
+				C578A40A2CEA217B00636B45 /* NormalSearch.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C59BC20A2CE9F1E2009513DA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		C5FDC9C62CCEA22900DD23F0 = {
@@ -213,6 +309,10 @@
 		C5FEB10D2CDE875F007798C5 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				C59BC2042CE9EC73009513DA /* Model */,
+				C59BC2032CE9EC6F009513DA /* View */,
+				C59BC2022CE9EC6B009513DA /* ViewModel */,
+				C59BC2012CE9EC5E009513DA /* Helper */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -227,6 +327,9 @@
 		C5FEB10F2CDE8769007798C5 /* Info */ = {
 			isa = PBXGroup;
 			children = (
+				C59BC1FC2CE9EB94009513DA /* Model */,
+				C59BC1FD2CE9EB9B009513DA /* View */,
+				C59BC1FE2CE9EB9F009513DA /* ViewModel */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -420,10 +523,15 @@
 				C52CE1262CD7952E00C6D09A /* ContentView.swift in Sources */,
 				C5FEB15A2CE1E986007798C5 /* URLImage.swift in Sources */,
 				C5FEB15C2CE1EA81007798C5 /* HomeViewModel.swift in Sources */,
+				C59BC20C2CE9F1FB009513DA /* ImageSearch.swift in Sources */,
+				C578A40B2CEA217B00636B45 /* NormalSearch.swift in Sources */,
 				C5FEB1582CE1E598007798C5 /* HomeListCell.swift in Sources */,
+				C59BC2002CE9EBC8009513DA /* PerfumeInfo.swift in Sources */,
+				C59BC20E2CE9F21A009513DA /* CustomSearch.swift in Sources */,
 				C52CE1272CD7952E00C6D09A /* PerfuinderApp.swift in Sources */,
 				C5FEB1162CDE87E8007798C5 /* HomeModel.swift in Sources */,
 				C5FEB1562CE1E40F007798C5 /* Home.swift in Sources */,
+				C59BC2062CE9EC84009513DA /* MyPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
