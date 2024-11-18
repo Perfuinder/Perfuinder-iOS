@@ -45,7 +45,7 @@ struct Home: View {
                     .padding(.vertical, 25)
                     // 구역 가름선
                     Rectangle()
-                        .frame(width: .infinity, height: 1)
+                        .frame(width: geometry.size.width, height: 1)
                     
                     // 랜덤 브랜드 향수 구역
                     randomBrandSection
@@ -67,7 +67,7 @@ extension Home {
     @ViewBuilder
     private func seasonPerfumeSection(maxWidth: CGFloat) -> some View {
         VStack(alignment: .center, spacing: 0) {
-            if let seasonData = viewModel.data?.seasonRandom {
+            if let seasonData = viewModel.data?.seasonRandom.first {
                 NavigationLink {
                     PerfumeInfo()
                         .toolbarRole(.editor) // back 텍스트 표시X
@@ -86,7 +86,7 @@ extension Home {
                             .padding(.top, 15)
                         
                         Rectangle()
-                            .frame(width: .infinity, height: 2)
+                            .frame(maxWidth: .infinity, maxHeight: 2)
                             .foregroundStyle(Color.black)
                             .padding(.horizontal, 70)
                             .padding(.vertical, 5)
@@ -104,7 +104,7 @@ extension Home {
             }
             else {
                 ProgressView()
-                .frame(width: maxWidth, height: 250)
+                .frame(width: max(maxWidth, 0), height: 250)
             }
         }
         .background(
@@ -153,7 +153,7 @@ extension Home {
             }
             .foregroundStyle(Color.black)
             .padding([.top, .leading], 15)
-            .frame(width: maxWidth, height: 110, alignment: .topLeading)
+            .frame(maxWidth: max(maxWidth, 0), maxHeight: 110, alignment: .topLeading)
             .background(
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.white)
@@ -180,7 +180,7 @@ extension Home {
                     .foregroundStyle(Color.black)
             }
             .padding([.top, .leading], 15)
-            .frame(width: maxWidth, height: 110, alignment: .topLeading)
+            .frame(width: max(maxWidth, 0), height: 110, alignment: .topLeading)
             .background(
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.white)
@@ -192,7 +192,7 @@ extension Home {
     /// 랜덤 브랜드 향수 리스트 섹션
     private var randomBrandSection: some View {
         LazyVStack(alignment: .leading, spacing: 15) {
-            Text("조말론")
+            Text(viewModel.data?.randomBrandName ?? "")
                 .font(.title2)
                 .fontWeight(.bold)
             

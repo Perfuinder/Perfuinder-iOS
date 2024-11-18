@@ -10,16 +10,13 @@ import Foundation
 /// BaseURL, Endpoint를 모아두는 파일
 struct APIConstants {
     /// 서버 URL
-    static let baseURL = testURL
+    static let baseURL = devURL
+        
     
-    /// 실서버 URL
     static let prodURL = ""
     
-    /// 테스트용 URL
-    static let testURL = "https://jsonplaceholder.typicode.com/posts/1"
-    
-    /// 테스트 서버 URL
-    static let devURL = "http://localhost:8080"
+    /// 로컬 서버 URL
+    static let devURL = "http://localhost:8080/api/v1"
     
     /// 홈 화면 조회 API
     static let homeURL = "/home"

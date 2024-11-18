@@ -6,17 +6,52 @@
 //
 
 import Foundation
+import Alamofire
 
 /// 홈화면을 위한 뷰모델
 class HomeViewModel: ObservableObject {
     @Published var data: HomeModel?
     
     init() {
-        fetchData()
+        fetchData() { isSuccess in
+            if !isSuccess {
+                print("Failed to fetch data")
+            }
+        }
     }
     
     // TODO: API 호출해서 데이터 받아오기 방식으로 바꾸기
-    func fetchData() {
+    func fetchData(completion: @escaping (Bool) -> (Void)) {
+        HomeAPI.shared.getHome { response in
+            switch response {
+            case .success(let data):
+                // TODO: 데이터 처리
+                if let data = data as? HomeResponse {
+                    self.data = data.toEntity()
+                }
+                completion(true)
+                
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
+        }
+        
+        
+        // API로 안받아오고 더미데이터로 넣을 때(예비)
+        /*
         var randomBrandPerfumeArray: [RandomBrandPerfume] = []
         
         for i in 0...9 {
@@ -33,5 +68,7 @@ class HomeViewModel: ObservableObject {
                                               imageURL: seasonimageURL),
                               randomBrandName: "조말론",
                               brandRandom: randomBrandPerfumeArray)
+        */
     }
 }
+
