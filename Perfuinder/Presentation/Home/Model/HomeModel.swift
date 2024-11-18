@@ -9,7 +9,7 @@ import Foundation
 
 /// 홈화면 정보 모델
 struct HomeModel {
-    let seasonRandom: SeasonPerfume
+    let seasonRandom: [SeasonPerfume]
     let randomBrandName: String
     let brandRandom: [RandomBrandPerfume]
 }
