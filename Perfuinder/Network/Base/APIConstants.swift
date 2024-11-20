@@ -25,7 +25,7 @@ struct APIConstants {
     static let geminiSearchURL = "/gemini/search"
     
     /// 이미지 키워드 요청 API
-    static let imageKeywordURL = "/gemini/image/keyword"
+    static let imageKeywordURL = "/gemini/image/keywords"
     
     /// 개별향수정보조회 API
     static let perfumeInfoURL = "/perfumes"
