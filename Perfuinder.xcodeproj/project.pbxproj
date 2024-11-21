@@ -34,6 +34,7 @@
 		C59BC2062CE9EC84009513DA /* MyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BC2052CE9EC84009513DA /* MyPage.swift */; };
 		C59BC20C2CE9F1FB009513DA /* ImageSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BC20B2CE9F1FB009513DA /* ImageSearch.swift */; };
 		C59BC20E2CE9F21A009513DA /* CustomSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BC20D2CE9F21A009513DA /* CustomSearch.swift */; };
+		C5E91A582CEF52E800F2FDA3 /* KeyboardDismiss.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E91A572CEF52DD00F2FDA3 /* KeyboardDismiss.swift */; };
 		C5FEB1162CDE87E8007798C5 /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FEB1152CDE87E8007798C5 /* HomeModel.swift */; };
 		C5FEB1562CE1E40F007798C5 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FEB1552CE1E40F007798C5 /* Home.swift */; };
 		C5FEB1582CE1E598007798C5 /* HomeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FEB1572CE1E598007798C5 /* HomeListCell.swift */; };
@@ -87,6 +88,7 @@
 		C59BC2052CE9EC84009513DA /* MyPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPage.swift; sourceTree = "<group>"; };
 		C59BC20B2CE9F1FB009513DA /* ImageSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSearch.swift; sourceTree = "<group>"; };
 		C59BC20D2CE9F21A009513DA /* CustomSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearch.swift; sourceTree = "<group>"; };
+		C5E91A572CEF52DD00F2FDA3 /* KeyboardDismiss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDismiss.swift; sourceTree = "<group>"; };
 		C5FDC9CF2CCEA22900DD23F0 /* Perfuinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Perfuinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FDC9DF2CCEA22B00DD23F0 /* PerfuinderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerfuinderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FDC9E92CCEA22B00DD23F0 /* PerfuinderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerfuinderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -282,6 +284,7 @@
 		C56311AC2CEE63090028E0F2 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				C5E91A572CEF52DD00F2FDA3 /* KeyboardDismiss.swift */,
 				C5FEB1592CE1E986007798C5 /* URLImage.swift */,
 				C56311AD2CEE63260028E0F2 /* WrapLayout.swift */,
 			);
@@ -706,6 +709,7 @@
 				C52CE1272CD7952E00C6D09A /* PerfuinderApp.swift in Sources */,
 				C5FEB1162CDE87E8007798C5 /* HomeModel.swift in Sources */,
 				C56311532CEBB1B90028E0F2 /* HomeService.swift in Sources */,
+				C5E91A582CEF52E800F2FDA3 /* KeyboardDismiss.swift in Sources */,
 				C5FEB1562CE1E40F007798C5 /* Home.swift in Sources */,
 				C59BC2062CE9EC84009513DA /* MyPage.swift in Sources */,
 			);

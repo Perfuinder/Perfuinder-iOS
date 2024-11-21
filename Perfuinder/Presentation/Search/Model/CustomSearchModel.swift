@@ -33,9 +33,52 @@ enum SelectKeyword: String, CaseIterable {
 }
 
 /// 계절 이미지 선택용
-enum SeasonImage: String, CaseIterable {
-    case spring = "image-spring"
-    case summer = "image-summer"
-    case autumn = "image-fall"
-    case winter = "image-winter"
+enum SeasonImage: Int, CaseIterable {
+    case spring
+    case summer
+    case fall
+    case winter
+    
+    var text: String {
+        switch self {
+        case .spring:
+            "image-spring"
+        case .summer:
+            "image-summer"
+        case .fall:
+            "image-fall"
+        case .winter:
+            "image-winter"
+        }
+    }
+}
+
+/// 가격대 선택용
+enum PriceRange: Int, CaseIterable {
+    case all
+    case below5
+    case below10
+    case below20
+    case below30
+    case above30
+    case custom
+    
+    var text: String {
+        switch self {
+        case .all:
+            "전체"
+        case .below5:
+            "5만원 이하"
+        case .below10:
+            "5-10만원"
+        case .below20:
+            "10-20만원"
+        case .below30:
+            "20-30만원"
+        case .above30:
+            "30만원 이상"
+        case .custom:
+            "직접 입력"
+        }
+    }
 }

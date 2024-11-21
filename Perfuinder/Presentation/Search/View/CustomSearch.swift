@@ -30,18 +30,65 @@ struct CustomSearch: View {
     /// 선택된 계절이미지
     @State var selectedSeasonImage: SeasonImage?
     
+    // MARK: 가격대 관련
+    /// 선택된 가격대
+    @State var selectedPriceRange: PriceRange = .all
+    
+    /// 직접 입력하는 가격대일 때, 최소 가격
+    @State var customPriceRange_min: Int?
+    
+    /// 직접 입력하는 가격대일 때, 최대 가격
+    @State var customPriceRange_max: Int?
+    
+    // 다음 화면 넘어가기 가능여부
+    /// 향수 검색 가능여부
+    /// - 키워드가 하나라도 있다 || 선택된 이미지가 있다
+    /// - 가격 이상하게 적지 않음: 최소가격 < 최대가격
+    var isSearchPossible: Bool {
+        // 직접 입력 가격 범위일 때, 최소 가격보다 최대 가격이 커야 함
+        
+        /// 가격범위 검증용
+        var isPriceRangeValid: Bool = true
+        
+        // 가격 직접 입력일 때
+        if selectedPriceRange == .custom {
+            // 입력된 가격 있는지 체크
+            if let minPrice = customPriceRange_min, let maxPrice = customPriceRange_max {
+                
+                isPriceRangeValid = minPrice < maxPrice
+            } else {
+                // 입력된 가격 없으면 false
+                isPriceRangeValid = false
+            }
+        }
+        
+        return (!customKeywordList.isEmpty || !selectedKeywordList.isEmpty || selectedSeasonImage != nil) && isPriceRangeValid
+    }
+    
     // MARK: - View
     var body: some View {
-        ScrollView {
-            GeometryReader { geometry in
+        GeometryReader { geometry in
+            ScrollView {
                 VStack(spacing: 30) {
                     // 키워드 입력 || 선택
                     selectKeywordSection
                     
                     // 이미지 선택
                     imageSection(maxWidth: geometry.size.width)
+                    
+                    // 가격대 선택
+                    priceRangeSection
+                    
+                    // 향수 찾기 버튼
+                    searchButton
                 }
                 .padding(.horizontal, 20)
+                .navigationTitle("AI 탐색")
+                .navigationBarTitleDisplayMode(.large)
+            }
+            .onTapGesture {
+                print("키보드 내려야 하는데")
+                self.hideKeyboard()
             }
         }
         .toolbarVisibility(.hidden, for: .tabBar)   // 탭바 안보이도록
@@ -218,13 +265,13 @@ extension CustomSearch {
                         RoundedRectangle(cornerRadius: 15)
                             .fill(Color.white)
                             .stroke(selectedSeasonImage == seasonImage ? Color.customBlack : Color.unselected, lineWidth: 2)
-                            .frame(width: (maxWidth-60)/2, height: 150)
+                            .frame(width: max((maxWidth-60)/2, 0), height: 150)
                         
                         // 계절별 이미지
-                        Image(seasonImage.rawValue)
+                        Image(seasonImage.text)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: (maxWidth - 80)/2, height: 140)
+                            .frame(width: max((maxWidth - 80)/2, 0), height: 140)
                             .clipped()
                             .cornerRadius(11)
                     }
@@ -245,4 +292,122 @@ extension CustomSearch {
             }
         }
     }
+    
+    // MARK: 가격대 선택
+    private var priceRangeSection: some View {
+        VStack(spacing: 0) {
+            // 섹션 제목
+            Text("키워드")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, 20)
+            
+            // 가격대 토큰
+            WrapLayout {
+                ForEach(PriceRange.allCases, id: \.self) { range in
+                    priceRangeToken(range)
+                }
+            }
+            
+            // 가격대 직접 입력 선택했을 때 가격 범위 입력하는 UI
+            if selectedPriceRange == .custom {
+                customPriceRangeInput
+                    .padding(.top, 15)
+            }
+        }
+        // 가격 직접입력했다가 다른 걸로 변경하면 리셋
+        .onChange(of: selectedPriceRange) { oldValue, newValue in
+            if newValue != .custom {
+                print("가격대 초기화")
+                customPriceRange_min = nil
+                customPriceRange_max = nil
+            }
+        }
+    }
+    
+    /// 선택지 키워드 토큰
+    @ViewBuilder
+    private func priceRangeToken(_ priceRange: PriceRange) -> some View {
+        Text(priceRange.text)
+            .font(.callout)
+            .padding(.horizontal, 15)
+            .padding(.vertical, 10)
+            // 글씨) 선택 ? 흰색 : 검은색
+            .foregroundStyle(selectedPriceRange == priceRange ? Color.white : Color.black)
+            // 배경) 선택 ? 검은색 : 흰색
+            .background(
+                RoundedRectangle(cornerRadius: 40)
+                    .fill(selectedPriceRange == priceRange ? Color.customBlack : Color.unselected)
+            )
+            .onTapGesture {
+                // 탭했을 때 선택된 가격대에 선택한 토큰 반영
+                withAnimation (.easeInOut) {
+                    selectedPriceRange = priceRange
+                }
+            }
+    }
+    
+    /// 직접입력 시 나오는 가격 입력 UI
+    private var customPriceRangeInput: some View {
+        HStack {
+            // 최소가격
+            singlePriceInput(isMin: true, inputPrice: $customPriceRange_min)
+            
+            // ~
+            Text("~")
+            
+            // 최대가격
+            singlePriceInput(isMin: false, inputPrice: $customPriceRange_max)
+        }
+    }
+    
+    
+    /// 가격선택범위 한 개 UI
+    /// - 2번 반복되서 그냥 한 번 만들어서 재활용함
+    private func singlePriceInput(isMin: Bool, inputPrice: Binding<Int?>) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            // 텍스트
+            Text(isMin ? "최소가격" : "최대가격")
+                .font(.subheadline)
+            
+            // 가격입력 캡슐
+            HStack {
+                TextField("00,000", value: inputPrice, format: .number)
+                    .keyboardType(.numberPad)
+                
+                Text("원")
+                    .font(.callout)
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 15)
+            .background(
+                RoundedRectangle(cornerRadius: 40)
+                    .fill(Color.unselected)
+            )
+        }
+    }
+    
+    /// 향수 찾기 버튼
+    private var searchButton: some View {
+        NavigationLink {
+            Recommend()
+        } label: {
+            Text("향수 찾기")
+                .font(.callout)
+                .fontWeight(.semibold)
+                .foregroundStyle(Color.white)
+                .padding(.vertical, 15)
+                .frame(maxWidth: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(isSearchPossible ? Color.customBlack : Color.gray.opacity(0.6))
+                )
+        }
+        .disabled(!isSearchPossible)
+
+    }
+    
+    
 }
+
