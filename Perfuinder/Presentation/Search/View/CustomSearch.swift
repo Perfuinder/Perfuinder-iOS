@@ -10,6 +10,7 @@ import SwiftUI
 /// AI 탐색
 struct CustomSearch: View {
     // MARK: - Properties
+    // MARK: 키워드 관련
     /// 직접 입력하는 키워드 String
     @State var customKeyword: String = ""
     
@@ -22,14 +23,27 @@ struct CustomSearch: View {
     /// 더보기 버튼 누르면 선택지 키워드 20종 전부 다 보여주도록 결정해주는 변수
     @State var showAllSelectKeywords: Bool = false
     
+    // MARK: 이미지 관련    
+    /// 2열 레이아웃
+    let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
+    
+    /// 선택된 계절이미지
+    @State var selectedSeasonImage: SeasonImage?
+    
     // MARK: - View
     var body: some View {
-        VStack {
-            // 키워드 입력 관련
-            selectKeywordSection
-            
+        ScrollView {
+            GeometryReader { geometry in
+                VStack(spacing: 30) {
+                    // 키워드 입력 || 선택
+                    selectKeywordSection
+                    
+                    // 이미지 선택
+                    imageSection(maxWidth: geometry.size.width)
+                }
+                .padding(.horizontal, 20)
+            }
         }
-        .padding(.horizontal, 20)
         .toolbarVisibility(.hidden, for: .tabBar)   // 탭바 안보이도록
     }
 }
@@ -183,6 +197,52 @@ extension CustomSearch {
                 .padding(.vertical, 15)
                 .background(Color.main10)
                 .clipShape(Capsule())
+        }
+    }
+    
+    // MARK: 이미지 선택
+    @ViewBuilder
+    private func imageSection(maxWidth: CGFloat) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // 섹션 제목
+            Text("이미지 선택")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, 20)
+            
+            LazyVGrid(columns: columns, spacing: 10) {
+                ForEach(SeasonImage.allCases, id: \.self) { seasonImage in
+                    ZStack(alignment: .center) {
+                        // 배경 네모: 선택되면 검은색으로 강조, 선택 안된거면 회색
+                        RoundedRectangle(cornerRadius: 15)
+                            .fill(Color.white)
+                            .stroke(selectedSeasonImage == seasonImage ? Color.customBlack : Color.unselected, lineWidth: 2)
+                            .frame(width: (maxWidth-60)/2, height: 150)
+                        
+                        // 계절별 이미지
+                        Image(seasonImage.rawValue)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: (maxWidth - 80)/2, height: 140)
+                            .clipped()
+                            .cornerRadius(11)
+                    }
+                    .onTapGesture {
+                        // 탭한 경우 이미지 선택 / 선택해제
+                        withAnimation (.easeInOut) {
+                            // 선택된 이미지가 현재 이미지가 아니라면 탭된 이미지 선택하기
+                            if selectedSeasonImage != seasonImage {
+                                selectedSeasonImage = seasonImage
+                            }
+                            // 이미 해당 이미지가 선택되어 있을 경우, 선택해제하기
+                            else {
+                                selectedSeasonImage = nil
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

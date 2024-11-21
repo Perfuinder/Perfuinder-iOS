@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// 향수 검색 기본 제공 키워드
 enum SelectKeyword: String, CaseIterable {
     case sophisticated = "세련된"
     case bold = "대담한"
@@ -29,4 +30,12 @@ enum SelectKeyword: String, CaseIterable {
     case sensual = "관능적인"
     case elegant = "우아한"
     case feminine = "여성적인"
+}
+
+/// 계절 이미지 선택용
+enum SeasonImage: String, CaseIterable {
+    case spring = "image-spring"
+    case summer = "image-summer"
+    case autumn = "image-fall"
+    case winter = "image-winter"
 }
