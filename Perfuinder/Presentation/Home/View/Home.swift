@@ -17,6 +17,27 @@ struct Home: View {
     
     /// PhotosPicker에서 선택된 이미지를 UIImage로 변환
     @State private var selectedImage: UIImage?
+    
+    /// 계절별 향수 브랜드에 따라 이미지 크기 조정하기위한 변수
+    var seasonPerfumeImageWidth: CGFloat {
+        switch viewModel.data?.seasonRandom.first?.brand {
+        case "JOMALONE":
+            return 180
+        case "FORMENT":
+            return 230
+        default:
+            return 200
+        }
+    }
+    
+    /// 계절별 향수 브랜드가 포맨트이면 clipshape 해주기 위한 변수
+    var seasonPerfumeClipShape: AnyShape {
+        if viewModel.data?.seasonRandom.first?.brand == "FORMENT" {
+            return AnyShape(Capsule())
+        } else {
+            return AnyShape(Rectangle())
+        }
+    }
         
     // MARK: - View
     var body: some View {
@@ -74,8 +95,10 @@ extension Home {
                     
                 } label: {
                     VStack(spacing: 0) {
+                        // 향수 이미지
                         URLImage(url: seasonData.imageURL)
-                            .frame(width: seasonData.brand == "조말론" ? 180 : 200, height: 160)
+                            .frame(width: seasonPerfumeImageWidth, height: 160)
+                            .clipShape(seasonPerfumeClipShape)
                             .clipped()
                             .padding(.top, 15)
                         
@@ -91,10 +114,11 @@ extension Home {
                             .padding(.horizontal, 70)
                             .padding(.vertical, 5)
                         
-                        HStack(spacing: 5) {
+                        HStack(alignment: .top, spacing: 5) {
                             Text(seasonData.brand)
                             Text(seasonData.perfumeName)
                                 .fontWeight(.semibold)
+                                .multilineTextAlignment(.leading)
                         }
                         .foregroundStyle(Color.black)
                         .padding(.bottom, 15)
@@ -191,14 +215,14 @@ extension Home {
     
     /// 랜덤 브랜드 향수 리스트 섹션
     private var randomBrandSection: some View {
-        LazyVStack(alignment: .leading, spacing: 15) {
+        LazyVStack(alignment: .leading, spacing: 0) {
             Text(viewModel.data?.randomBrandName ?? "")
                 .font(.title2)
                 .fontWeight(.bold)
             
             ForEach(viewModel.data?.brandRandom ?? [], id: \.id) { perfume in
                 VStack(spacing: 0) {
-                    HomeListCell(perfume: perfume)
+                    HomeListCell(perfume: perfume, brand: viewModel.data?.randomBrandName ?? "")
                     Divider()
                 }
             }
