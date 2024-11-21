@@ -27,6 +27,8 @@
 		C56311A42CED8B620028E0F2 /* ImageSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56311A32CED8B620028E0F2 /* ImageSearchResponse.swift */; };
 		C56311A72CED8BFA0028E0F2 /* ImageSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56311A62CED8BFA0028E0F2 /* ImageSearchService.swift */; };
 		C56311A92CED8EEA0028E0F2 /* ImageSearchAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56311A82CED8EEA0028E0F2 /* ImageSearchAPI.swift */; };
+		C56311AB2CEE5B850028E0F2 /* CustomSearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56311AA2CEE5B850028E0F2 /* CustomSearchModel.swift */; };
+		C56311AE2CEE63260028E0F2 /* WrapLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56311AD2CEE63260028E0F2 /* WrapLayout.swift */; };
 		C578A40B2CEA217B00636B45 /* NormalSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C578A40A2CEA217B00636B45 /* NormalSearch.swift */; };
 		C59BC2002CE9EBC8009513DA /* PerfumeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BC1FF2CE9EBC8009513DA /* PerfumeInfo.swift */; };
 		C59BC2062CE9EC84009513DA /* MyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59BC2052CE9EC84009513DA /* MyPage.swift */; };
@@ -78,6 +80,8 @@
 		C56311A32CED8B620028E0F2 /* ImageSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSearchResponse.swift; sourceTree = "<group>"; };
 		C56311A62CED8BFA0028E0F2 /* ImageSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSearchService.swift; sourceTree = "<group>"; };
 		C56311A82CED8EEA0028E0F2 /* ImageSearchAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSearchAPI.swift; sourceTree = "<group>"; };
+		C56311AA2CEE5B850028E0F2 /* CustomSearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchModel.swift; sourceTree = "<group>"; };
+		C56311AD2CEE63260028E0F2 /* WrapLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrapLayout.swift; sourceTree = "<group>"; };
 		C578A40A2CEA217B00636B45 /* NormalSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalSearch.swift; sourceTree = "<group>"; };
 		C59BC1FF2CE9EBC8009513DA /* PerfumeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerfumeInfo.swift; sourceTree = "<group>"; };
 		C59BC2052CE9EC84009513DA /* MyPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPage.swift; sourceTree = "<group>"; };
@@ -275,6 +279,15 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		C56311AC2CEE63090028E0F2 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				C5FEB1592CE1E986007798C5 /* URLImage.swift */,
+				C56311AD2CEE63260028E0F2 /* WrapLayout.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 		C59BC1FC2CE9EB94009513DA /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -346,6 +359,7 @@
 		C59BC20A2CE9F1E2009513DA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C56311AA2CEE5B850028E0F2 /* CustomSearchModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -373,9 +387,9 @@
 		C5FEB0F62CDE775F007798C5 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				C56311AC2CEE63090028E0F2 /* Support */,
 				C52CE11F2CD7952E00C6D09A /* ContentView.swift */,
 				C52CE1202CD7952E00C6D09A /* PerfuinderApp.swift */,
-				C5FEB1592CE1E986007798C5 /* URLImage.swift */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -671,12 +685,14 @@
 				C59BC20C2CE9F1FB009513DA /* ImageSearch.swift in Sources */,
 				C56311562CEBB2A10028E0F2 /* HomeAPI.swift in Sources */,
 				C56311A92CED8EEA0028E0F2 /* ImageSearchAPI.swift in Sources */,
+				C56311AE2CEE63260028E0F2 /* WrapLayout.swift in Sources */,
 				C506981A2CEA598500341A50 /* APIEventLogger.swift in Sources */,
 				C506981B2CEA598500341A50 /* HTTPHeaderField.swift in Sources */,
 				C506981C2CEA598500341A50 /* NetworkResult.swift in Sources */,
 				C506981D2CEA598500341A50 /* CommonResponse.swift in Sources */,
 				C506981E2CEA598500341A50 /* TargetType.swift in Sources */,
 				C50698252CEA69F900341A50 /* Data+Extensions.swift in Sources */,
+				C56311AB2CEE5B850028E0F2 /* CustomSearchModel.swift in Sources */,
 				C506981F2CEA598500341A50 /* APIConstants.swift in Sources */,
 				C56311432CEBA1A50028E0F2 /* HomeResponse.swift in Sources */,
 				C50698202CEA598500341A50 /* BaseAPI.swift in Sources */,
