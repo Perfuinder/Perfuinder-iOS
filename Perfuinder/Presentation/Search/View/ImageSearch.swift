@@ -168,8 +168,8 @@ extension ImageSearch {
     /// 선택 완료 버튼
     private var completeButton: some View {
         NavigationLink {
-            // TODO: 선택한 키워드 담아서 화면 넘기기
-            Recommend()
+            // 선택한 키워드 담아서 화면 넘기기
+            Recommend(requestedSearch: CustomSearchRequest(keywords: vm.selectedKeywords.joined(separator: ", "), priceRangeCode: 0))
         } label: {
             Text("선택 완료")
                 .font(.callout)
