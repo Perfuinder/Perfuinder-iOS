@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct Recommend: View {
+    /// 검색 요청할 정보
+    let requestedSearch: CustomSearchRequest
+    
     var body: some View {
         Text("Recommend")
     }
 }
 
 #Preview {
-    Recommend()
+    Recommend(requestedSearch: .init())
 }
