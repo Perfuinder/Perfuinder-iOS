@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// AI 탐색 검색하기 위한 정보
 struct CustomSearchRequest: Encodable {
     var keywords: String? = nil
     var seasonCode: Int? = nil
