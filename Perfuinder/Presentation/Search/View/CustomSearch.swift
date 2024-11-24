@@ -10,36 +10,15 @@ import SwiftUI
 /// AI 탐색
 struct CustomSearch: View {
     // MARK: - Properties
-    // MARK: 키워드 관련
-    /// 직접 입력하는 키워드 String
-    @State var customKeyword: String = ""
-    
-    /// 직접 입력해서 추가한 키워드
-    @State var customKeywordList: [String] = []
-    
-    /// 기본 선택지 키워드들 중에 선택한 거
-    @State var selectedKeywordList: [SelectKeyword] = []
-    
+    /// 데이터 처리하는 뷰모델
+    @StateObject var vm = CustomSearchViewModel()
+        
     /// 더보기 버튼 누르면 선택지 키워드 20종 전부 다 보여주도록 결정해주는 변수
     @State var showAllSelectKeywords: Bool = false
     
-    // MARK: 이미지 관련    
     /// 2열 레이아웃
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
-    
-    /// 선택된 계절이미지
-    @State var selectedSeasonImage: SeasonImage?
-    
-    // MARK: 가격대 관련
-    /// 선택된 가격대
-    @State var selectedPriceRange: PriceRange = .all
-    
-    /// 직접 입력하는 가격대일 때, 최소 가격
-    @State var customPriceRange_min: Int?
-    
-    /// 직접 입력하는 가격대일 때, 최대 가격
-    @State var customPriceRange_max: Int?
-    
+        
     // 다음 화면 넘어가기 가능여부
     /// 향수 검색 가능여부
     /// - 키워드가 하나라도 있다 || 선택된 이미지가 있다
@@ -51,9 +30,9 @@ struct CustomSearch: View {
         var isPriceRangeValid: Bool = true
         
         // 가격 직접 입력일 때
-        if selectedPriceRange == .custom {
+        if vm.selectedPriceRange == .custom {
             // 입력된 가격 있는지 체크
-            if let minPrice = customPriceRange_min, let maxPrice = customPriceRange_max {
+            if let minPrice = vm.customPriceRange_min, let maxPrice = vm.customPriceRange_max {
                 
                 isPriceRangeValid = minPrice < maxPrice
             } else {
@@ -62,7 +41,7 @@ struct CustomSearch: View {
             }
         }
         
-        return (!customKeywordList.isEmpty || !selectedKeywordList.isEmpty || selectedSeasonImage != nil) && isPriceRangeValid
+        return (!vm.customKeywordList.isEmpty || !vm.selectedKeywordList.isEmpty || vm.selectedSeasonImage != nil) && isPriceRangeValid
     }
     
     // MARK: - View
@@ -118,7 +97,7 @@ extension CustomSearch {
             
             WrapLayout {
                 // 직접 입력한 키워드 제일 먼저 보여주기
-                ForEach(customKeywordList, id: \.self) { text in
+                ForEach(vm.customKeywordList, id: \.self) { text in
                     customKeywordToken(text)
                 }
                 
@@ -139,7 +118,7 @@ extension CustomSearch {
     /// 키워드 집접 입력하기 부분
     private var customKeywordInput: some View {
         HStack {
-            TextField("키워드 직접 입력하기", text: $customKeyword)
+            TextField("키워드 직접 입력하기", text: $vm.customKeyword)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 15)
                 .padding(.vertical, 10)
@@ -151,10 +130,10 @@ extension CustomSearch {
             Button {
                 withAnimation (.easeInOut) {
                     // 텍스트필드에 있는 거 label로 내리기
-                    customKeywordList.insert(customKeyword, at: 0)
+                    vm.customKeywordList.insert(vm.customKeyword, at: 0)
                     
                     // 텍스트필드 비우기
-                    customKeyword.removeAll()
+                    vm.customKeyword.removeAll()
                 }
                 
             } label: {
@@ -185,7 +164,7 @@ extension CustomSearch {
             Button {
                 withAnimation(.easeInOut) {
                     // 직접 입력 키워드에서 삭제
-                    customKeywordList.removeAll { $0 == text }
+                    vm.customKeywordList.removeAll { $0 == text }
                 }
             } label: {
                 Image(systemName: "multiply")
@@ -210,21 +189,21 @@ extension CustomSearch {
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
             // 글씨) 선택 ? 흰색 : 검은색
-            .foregroundStyle(selectedKeywordList.contains(keyword) ? Color.white : Color.black)
+            .foregroundStyle(vm.selectedKeywordList.contains(keyword) ? Color.white : Color.black)
             // 배경) 선택 ? 검은색 : 흰색
             .background(
                 RoundedRectangle(cornerRadius: 40)
-                    .fill(selectedKeywordList.contains(keyword) ? Color.customBlack : Color.unselected)
+                    .fill(vm.selectedKeywordList.contains(keyword) ? Color.customBlack : Color.unselected)
             )
             .onTapGesture {
                 withAnimation (.easeInOut) {
                     // 이미 선택한 키워드면 없애주기
-                    if selectedKeywordList.contains(keyword) {
-                        selectedKeywordList.removeAll(where: {$0.rawValue == keyword.rawValue})
+                    if vm.selectedKeywordList.contains(keyword) {
+                        vm.selectedKeywordList.removeAll(where: {$0.rawValue == keyword.rawValue})
                     }
                     // 기존 선택 키워드들 중에 없었으면 추가하기
                     else {
-                        selectedKeywordList.append(keyword)
+                        vm.selectedKeywordList.append(keyword)
                     }
                 }
             }
@@ -264,7 +243,7 @@ extension CustomSearch {
                         // 배경 네모: 선택되면 검은색으로 강조, 선택 안된거면 회색
                         RoundedRectangle(cornerRadius: 15)
                             .fill(Color.white)
-                            .stroke(selectedSeasonImage == seasonImage ? Color.customBlack : Color.unselected, lineWidth: 2)
+                            .stroke(vm.selectedSeasonImage == seasonImage ? Color.customBlack : Color.unselected, lineWidth: 2)
                             .frame(width: max((maxWidth-60)/2, 0), height: 150)
                         
                         // 계절별 이미지
@@ -276,15 +255,20 @@ extension CustomSearch {
                             .cornerRadius(11)
                     }
                     .onTapGesture {
+                        print("onTapGesture")
                         // 탭한 경우 이미지 선택 / 선택해제
                         withAnimation (.easeInOut) {
                             // 선택된 이미지가 현재 이미지가 아니라면 탭된 이미지 선택하기
-                            if selectedSeasonImage != seasonImage {
-                                selectedSeasonImage = seasonImage
+                            if vm.selectedSeasonImage != seasonImage {
+                                print("이미지 선택하기")
+                                vm.selectedSeasonImage = seasonImage
+                                print("vm.selectedSeasonImage: \(vm.selectedSeasonImage?.text ?? "")")
+                                print("seasonImage: \(seasonImage.text)")
                             }
                             // 이미 해당 이미지가 선택되어 있을 경우, 선택해제하기
                             else {
-                                selectedSeasonImage = nil
+                                print("이미지 선택해제하기")
+                                vm.selectedSeasonImage = nil
                             }
                         }
                     }
@@ -311,17 +295,17 @@ extension CustomSearch {
             }
             
             // 가격대 직접 입력 선택했을 때 가격 범위 입력하는 UI
-            if selectedPriceRange == .custom {
+            if vm.selectedPriceRange == .custom {
                 customPriceRangeInput
                     .padding(.top, 15)
             }
         }
         // 가격 직접입력했다가 다른 걸로 변경하면 리셋
-        .onChange(of: selectedPriceRange) { oldValue, newValue in
+        .onChange(of: vm.selectedPriceRange) { oldValue, newValue in
             if newValue != .custom {
                 print("가격대 초기화")
-                customPriceRange_min = nil
-                customPriceRange_max = nil
+                vm.customPriceRange_min = nil
+                vm.customPriceRange_max = nil
             }
         }
     }
@@ -334,16 +318,16 @@ extension CustomSearch {
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
             // 글씨) 선택 ? 흰색 : 검은색
-            .foregroundStyle(selectedPriceRange == priceRange ? Color.white : Color.black)
+            .foregroundStyle(vm.selectedPriceRange == priceRange ? Color.white : Color.black)
             // 배경) 선택 ? 검은색 : 흰색
             .background(
                 RoundedRectangle(cornerRadius: 40)
-                    .fill(selectedPriceRange == priceRange ? Color.customBlack : Color.unselected)
+                    .fill(vm.selectedPriceRange == priceRange ? Color.customBlack : Color.unselected)
             )
             .onTapGesture {
                 // 탭했을 때 선택된 가격대에 선택한 토큰 반영
                 withAnimation (.easeInOut) {
-                    selectedPriceRange = priceRange
+                    vm.selectedPriceRange = priceRange
                 }
             }
     }
@@ -352,13 +336,13 @@ extension CustomSearch {
     private var customPriceRangeInput: some View {
         HStack {
             // 최소가격
-            singlePriceInput(isMin: true, inputPrice: $customPriceRange_min)
+            singlePriceInput(isMin: true, inputPrice: $vm.customPriceRange_min)
             
             // ~
             Text("~")
             
             // 최대가격
-            singlePriceInput(isMin: false, inputPrice: $customPriceRange_max)
+            singlePriceInput(isMin: false, inputPrice: $vm.customPriceRange_max)
         }
     }
     
@@ -391,7 +375,8 @@ extension CustomSearch {
     /// 향수 찾기 버튼
     private var searchButton: some View {
         NavigationLink {
-            Recommend(requestedSearch: makeRequestDTO())
+            // TODO: API 결과 추천받은 향수 리스트 Recommend 화면으로 넘기기
+            Recommend(searchBody: vm.makeRequestDTO())
                 .toolbarRole(.editor)
         } label: {
             Text("향수 찾기")
@@ -411,57 +396,3 @@ extension CustomSearch {
     
     
 }
-
-// MARK: - Function
-extension CustomSearch {
-    /// 뷰에서 선택한 데이터 조합해서 CustomSearchRequest DTO 만들어주기
-    private func makeRequestDTO() -> CustomSearchRequest {
-        print("-----makeRequestDTO()------")
-        // 키워드
-        var keywords: String?
-        
-        // 직접입력 + 선택 합산용 배열
-        var keywordsTotal: [String] = []
-        // 선택한 키워드 있으면 배열에 추가
-        if !selectedKeywordList.isEmpty {
-            keywordsTotal = selectedKeywordList.map { $0.rawValue }
-        }
-        // 직접입력 키워드 있으면 배열에 추가
-        keywordsTotal.append(contentsOf: customKeywordList)
-        
-        // 선택하거나 입력한 키워드가 있다면 객체 입력용 변수에 string 형태로 추가
-        if !keywordsTotal.isEmpty {
-            keywords = keywordsTotal.joined(separator: ", ")
-        }
-        
-        print("- keywords: \(keywords ?? "nil")")
-        
-        // 계절 이미지코드
-        let seasonCode: Int? = self.selectedSeasonImage?.rawValue
-        print("- seasonCode: \(seasonCode)")
-        print("- priceRangeCode: \((self.selectedPriceRange.rawValue))")
-        print("- customPriceRangeMin: \((self.customPriceRange_min))")
-        print("- customPriceRangeMax: \((self.customPriceRange_max))")
-        
-        // 결과 객체 리턴
-        return CustomSearchRequest(
-            keywords: keywords,
-            seasonCode: seasonCode,
-            priceRangeCode: self.selectedPriceRange.rawValue,
-            customPriceRangeMin: self.customPriceRange_min,
-            customPriceRangeMax: self.customPriceRange_max
-        )
-    }
-}
-
-/*
- 
- struct CustomSearchRequest: Encodable {
-     var keywords: String? = nil
-     var seasonCode: Int? = nil
-     var priceRangeCode: Int = 0
-     var customPriceRangeMin: Int? = nil
-     var customPriceRangeMax: Int? = nil
- }
-
- */

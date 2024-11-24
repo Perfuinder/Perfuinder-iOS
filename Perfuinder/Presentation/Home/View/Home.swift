@@ -90,7 +90,7 @@ extension Home {
         VStack(alignment: .center, spacing: 0) {
             if let seasonData = viewModel.data?.seasonRandom.first {
                 NavigationLink {
-                    PerfumeInfo()
+                    PerfumeInfo(perfumeID: seasonData.perfumeId)
                         .toolbarRole(.editor) // back 텍스트 표시X
                     
                 } label: {

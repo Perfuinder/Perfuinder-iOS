@@ -169,7 +169,8 @@ extension ImageSearch {
     private var completeButton: some View {
         NavigationLink {
             // 선택한 키워드 담아서 화면 넘기기
-            Recommend(requestedSearch: CustomSearchRequest(keywords: vm.selectedKeywords.joined(separator: ", "), priceRangeCode: 0))
+            Recommend(searchBody: CustomSearchRequest(keywords: vm.selectedKeywords.joined(separator: ", "), priceRangeCode: 0))
+                .toolbarRole(.editor)
         } label: {
             Text("선택 완료")
                 .font(.callout)
