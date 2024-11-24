@@ -15,5 +15,5 @@ struct CustomSearchResponse: Codable {
     let imageUrl: String
     let mainNotes: [String]
     let perfumeDesc: String
-    let favorite: Bool
+    var favorite: Bool
 }

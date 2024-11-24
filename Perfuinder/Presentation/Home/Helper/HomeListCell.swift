@@ -16,7 +16,7 @@ struct HomeListCell: View {
     
     var body: some View {
         NavigationLink {
-            PerfumeInfo()
+            PerfumeInfo(perfumeID: perfume.id)
                 .toolbarRole(.editor) // back 텍스트 표시X
         } label: {
             HStack(alignment: .center, spacing: 25) {
