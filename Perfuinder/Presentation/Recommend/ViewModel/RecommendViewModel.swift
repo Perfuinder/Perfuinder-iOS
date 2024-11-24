@@ -14,6 +14,9 @@ class RecommendViewModel: ObservableObject {
     /// 검색결과 향수 데이터
     @Published var data: [CustomSearchResponse]?
     
+    /// 찜하기 변경 받아온 결과
+    var changedFavoriteBool: Bool?
+    
     // MARK: 비교하기 할 때 필요한 변수
     @Published var toComparePerfumeID: Int?
     
@@ -68,20 +71,54 @@ class RecommendViewModel: ObservableObject {
     /// 해당하는 향수의 favorite 수정하기
     func toggleFavorite(of perfumeId: Int) {
         print("toggleFavorite 호출")
-        // TODO: 기본값 false로 수정
-        var complete: Bool = true
         
-        // TODO: 찜하기 API 호출
-        
-        // API 호출 결과 따라서 해당 향수의 favorite 수정해주기
-        if complete {
-            if let perfumeIndex = self.data?.firstIndex(where: {
-                perfumeId == $0.perfumeId }) {
-                print("찜상태 변경하기 위한 인덱스 찾기 완")
-                self.data![perfumeIndex].favorite.toggle()
+        // 찜하기 API 호출
+        requestFavoriteToggle(id: perfumeId) { success in
+            // API 호출 결과 따라서 해당 향수의 favorite 수정해주기
+            if success {
+                if let perfumeIndex = self.data?.firstIndex(where: {
+                    perfumeId == $0.perfumeId }), let changedBool = self.changedFavoriteBool {
+                    self.data![perfumeIndex].favorite = changedBool
+                    print("찜상태 변경 성공!")
+                }
+            } else {
+                print("찜하기 실패")
             }
-        } else {
-            print("찜하기 실패")
+        }
+        
+    }
+    
+    /// 해당하는 id의 향수 찜 토글하기 API 호출
+    func requestFavoriteToggle(id: Int, completion: @escaping (Bool) -> Void) {
+        FavoriteAPI.shared.favoriteToggle(id: id) { response in
+            switch response {
+            case .success(let data):
+                print("API 호출해서 찜상태 변경 응답 받아옴")
+                if data as! Bool {
+                    self.changedFavoriteBool = true
+                } else {
+                    self.changedFavoriteBool = false
+                }
+
+                completion(true)
+                
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
         }
     }
+
 }

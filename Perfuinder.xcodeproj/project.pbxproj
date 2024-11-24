@@ -44,6 +44,8 @@
 		C5E91A7C2CF240C600F2FDA3 /* PureToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E91A7B2CF240C600F2FDA3 /* PureToken.swift */; };
 		C5E91A8F2CF31DEA00F2FDA3 /* PageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E91A8E2CF31DEA00F2FDA3 /* PageIndicator.swift */; };
 		C5E91A972CF35F1700F2FDA3 /* Compare_Recommend.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E91A962CF35F1700F2FDA3 /* Compare_Recommend.swift */; };
+		C5E91A9B2CF36C5000F2FDA3 /* FavoriteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E91A9A2CF36C5000F2FDA3 /* FavoriteService.swift */; };
+		C5E91A9D2CF36E7800F2FDA3 /* FavoriteAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E91A9C2CF36E7800F2FDA3 /* FavoriteAPI.swift */; };
 		C5FEB1162CDE87E8007798C5 /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FEB1152CDE87E8007798C5 /* HomeModel.swift */; };
 		C5FEB1562CE1E40F007798C5 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FEB1552CE1E40F007798C5 /* Home.swift */; };
 		C5FEB1582CE1E598007798C5 /* HomeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FEB1572CE1E598007798C5 /* HomeListCell.swift */; };
@@ -107,6 +109,8 @@
 		C5E91A7B2CF240C600F2FDA3 /* PureToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PureToken.swift; sourceTree = "<group>"; };
 		C5E91A8E2CF31DEA00F2FDA3 /* PageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageIndicator.swift; sourceTree = "<group>"; };
 		C5E91A962CF35F1700F2FDA3 /* Compare_Recommend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compare_Recommend.swift; sourceTree = "<group>"; };
+		C5E91A9A2CF36C5000F2FDA3 /* FavoriteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteService.swift; sourceTree = "<group>"; };
+		C5E91A9C2CF36E7800F2FDA3 /* FavoriteAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteAPI.swift; sourceTree = "<group>"; };
 		C5FDC9CF2CCEA22900DD23F0 /* Perfuinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Perfuinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FDC9DF2CCEA22B00DD23F0 /* PerfuinderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerfuinderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FDC9E92CCEA22B00DD23F0 /* PerfuinderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerfuinderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -430,6 +434,22 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		C5E91A982CF36B2A00F2FDA3 /* Favorite */ = {
+			isa = PBXGroup;
+			children = (
+				C5E91A9C2CF36E7800F2FDA3 /* FavoriteAPI.swift */,
+			);
+			path = Favorite;
+			sourceTree = "<group>";
+		};
+		C5E91A992CF36B5500F2FDA3 /* Favorite */ = {
+			isa = PBXGroup;
+			children = (
+				C5E91A9A2CF36C5000F2FDA3 /* FavoriteService.swift */,
+			);
+			path = Favorite;
+			sourceTree = "<group>";
+		};
 		C5FDC9C62CCEA22900DD23F0 = {
 			isa = PBXGroup;
 			children = (
@@ -489,6 +509,7 @@
 			children = (
 				C56311542CEBB2730028E0F2 /* Home */,
 				C56311A12CED8ACF0028E0F2 /* Search */,
+				C5E91A982CF36B2A00F2FDA3 /* Favorite */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -522,6 +543,7 @@
 			children = (
 				C56311512CEBB1810028E0F2 /* Home */,
 				C56311A52CED8BE90028E0F2 /* Search */,
+				C5E91A992CF36B5500F2FDA3 /* Favorite */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -766,6 +788,7 @@
 				C506981D2CEA598500341A50 /* CommonResponse.swift in Sources */,
 				C506981E2CEA598500341A50 /* TargetType.swift in Sources */,
 				C5E91A702CF1C7A700F2FDA3 /* CustomSearchResponse.swift in Sources */,
+				C5E91A9B2CF36C5000F2FDA3 /* FavoriteService.swift in Sources */,
 				C5E91A722CF1C8E600F2FDA3 /* CustomSearchService.swift in Sources */,
 				C50698252CEA69F900341A50 /* Data+Extensions.swift in Sources */,
 				C5E91A5D2CEF81AA00F2FDA3 /* CustomSearchRequest.swift in Sources */,
@@ -775,6 +798,7 @@
 				C50698202CEA598500341A50 /* BaseAPI.swift in Sources */,
 				C56311A72CED8BFA0028E0F2 /* ImageSearchService.swift in Sources */,
 				C578A40B2CEA217B00636B45 /* NormalSearch.swift in Sources */,
+				C5E91A9D2CF36E7800F2FDA3 /* FavoriteAPI.swift in Sources */,
 				C5E91A782CF1D9E200F2FDA3 /* CustomSearchViewModel.swift in Sources */,
 				C563119E2CEBC6F80028E0F2 /* Recommend.swift in Sources */,
 				C5E91A762CF1CFC700F2FDA3 /* RecommendViewModel.swift in Sources */,
