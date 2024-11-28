@@ -14,21 +14,18 @@ struct Compare_Recommend: View {
     @Binding var showCompareSheet: Bool
     
     /// 향수 비교하기 눌렀을 때의 기본선택된 향수(선택된 표시해줄 향수 ID)
-    let currentPerfumeID: Int
+    let currentPerfumeID: Int?
     
     /// 이 뷰에서 선택해서 비교하기로 넘길 향수의 ID
     @Binding var toComparePerfumeID: Int?
     
     /// parent view에서 전달받을 추천향수 5종 데이터
-    let perfumeData: [CustomSearchResponse]
+    let perfumeData: [Int]
     
     
     // MARK: - View
     var body: some View {      
-        ForEach(perfumeData, id: \.perfumeId) { perfume in
-            Text(perfume.perfumeName)
-                .foregroundStyle(currentPerfumeID == perfume.perfumeId ? Color.blue : Color.black)
-        }
+        Text(String(perfumeData.count))
     }
 }
 

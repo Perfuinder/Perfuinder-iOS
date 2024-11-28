@@ -151,7 +151,7 @@ extension Recommend {
         VStack {
             NavigationLink {
                 // TODO: Compare에 현재 비교하기 선택한 id 전달하기
-                Compare()
+                Compare(compareType: .recommend)
             } label: {
                 Text("다른 향수와 비교하기")
                     .foregroundStyle(Color.black)

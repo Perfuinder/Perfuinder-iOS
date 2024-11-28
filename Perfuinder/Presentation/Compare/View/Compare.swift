@@ -10,79 +10,216 @@ import SwiftUI
 /// 두 가지 향수 비교하기
 struct Compare: View {
     // MARK: - Properties
+    /// 뷰모델
+    @StateObject var vm: CompareViewModel
+    
     /// 2열 레이아웃
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     
-    @State var selectedFirstVolumeIndex: Int = 0
-    @State var selectedSecondVolumeIndex: Int = 0
+    /// 용량별 가격에서 선택한 용량 인덱스 - 첫번째 향수
+    @State var volumeIndexFirstSelected: Int = 0
+    /// 용량별 가격에서 선택한 용량 인덱스 - 두번째 향수
+    @State var volumeIndexSecondSelected: Int = 0
+    
+    /// 향수 변경/선택할 sheet 띄우기
+    @State var showPerfumeSelectSheet: Bool = false
+    
+    /// 변경 선택한 향수가 첫번째향수인지?
+    /// - true: first
+    /// - false: second
+    @State var isFirstToChange: Bool = true
+    
+    /// 추천향수중 비교일 때 사용할 생성자
+    init(compareType: CompareType = .recommend, firstID: Int? = nil, secondID: Int? = nil, recommendedIDs: [Int]? = nil) {
+        _vm = StateObject(wrappedValue: CompareViewModel(firstID: firstID,
+                                                         secondID: secondID,
+                                                         compareType: compareType,
+                                                         recommendedPerfumeIDs: recommendedIDs))
+    }
     
     
     // MARK: - View
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: columns, spacing: 50) {
-                // MARK: 기본정보
-                // first
-                perfumeBasicInfo(imageURL: "https://image.sivillage.com/upload/C00001/goods/org/953/231108006980953.jpg?RS=750&SP=1", brand: "DIPTIQUE", title: "향수이름")
-                // second
-                perfumeBasicInfo(imageURL: "https://theforment.com/web/product/big/202402/f90e2db3d77c8541c3fbbe482a5a9891.png", brand: "FORMENT", title: "향수이름")
-                
-                // MARK: 가격정보
-                // first
-                priceComponent(isFirst: true, priceSet: [PriceDTO(volume: 50, price: 265050), PriceDTO(volume: 100, price: 25000), PriceDTO(volume: 150, price: 285000)])
-                // second
-                priceComponent(isFirst: false, priceSet: [PriceDTO(volume: 50, price: 265050), PriceDTO(volume: 100, price: 25000)])
-                
-                // MARK: 어울리는 계절
-                // first
-                seasonComponent(season: .winter)
-                // second
-                seasonComponent(season: .winter)
-                
-                // MARK: 성별
-                // first
-                genderComponent(gender: .female)
-                // second
-                genderComponent(gender: .female)
-                
-                // MARK: 대표 키워드
-                // first
-                keywordsComponent(keywords: ["로맨틱", "우아함", "고급스러움"])
-                // second
-                keywordsComponent(keywords: ["로맨틱", "신선함"])
-                
+            // 기본정보
+            basicInfo
+            
+            // 가격/계절/성별/키워드 비주얼 정보들
+            // 하나라도 있으면 정보 보이는 Grid 보여주고
+            if vm.first != nil || vm.second != nil {
+                visualInfo
             }
+            // 아무것도 없으면 "찜한 향수들을 비교해보세요" 박스 보여주기
+            else {
+                guideBoxLabel
+                    .padding(.top, 80)
+            }
+            
+//            LazyVGrid(columns: columns, spacing: 50) {
+//                
+//                // MARK: 가격정보
+//                // first
+//                priceComponent(isFirst: true, priceSet: [PriceDTO(volume: 50, price: 265050), PriceDTO(volume: 100, price: 25000), PriceDTO(volume: 150, price: 285000)])
+//                // second
+//                priceComponent(isFirst: false, priceSet: [PriceDTO(volume: 50, price: 265050), PriceDTO(volume: 100, price: 25000)])
+//                
+//                // MARK: 어울리는 계절
+//                // first
+//                seasonComponent(season: .winter)
+//                // second
+//                seasonComponent(season: .winter)
+//                
+//                // MARK: 성별
+//                // first
+//                genderComponent(gender: .female)
+//                // second
+//                genderComponent(gender: .female)
+//                
+//                // MARK: 대표 키워드
+//                // first
+//                keywordsComponent(keywords: ["로맨틱", "우아함", "고급스러움"])
+//                // second
+//                keywordsComponent(keywords: ["로맨틱", "신선함"])
+//                
+//            }
 
-            VStack(spacing: 50) {
-                // MARK: 설명
-                commonCompareComponent(componentType: 0)
-                
-                // MARK: 대표노트
-                commonCompareComponent(componentType: 1)
-                
-                // MARK: 탑노트 설명
-                commonCompareComponent(componentType: 2)
-                
-                // MARK: 미들노트 설명
-                commonCompareComponent(componentType: 3)
-                
-                // MARK: 베이스노트 설명
-                commonCompareComponent(componentType: 4)
+            // 텍스트 정보들
+            // 둘 중에 하나라도 있으면 보여주고, 없으면 그냥 아무것도 안띄우기
+            if vm.first != nil || vm.second != nil {
+                textInfo
             }
-            .padding(.vertical, 50)
-            .padding(.horizontal, 15)
+        }
+        .navigationTitle("향수 비교")
+        .navigationBarTitleDisplayMode(.large)
+        // MARK: 비교할 향수 선택하는 sheet
+        .sheet(isPresented: $showPerfumeSelectSheet) {
+            if vm.compareType == .like {
+                
+            } else if vm.compareType == .recommend {
+                // FIXME: 여기 바꿔야!
+                if isFirstToChange {
+                    Compare_Recommend(showCompareSheet: $showPerfumeSelectSheet, currentPerfumeID: vm.firstID, toComparePerfumeID: $vm.secondID, perfumeData: vm.recommendedPerfumeIDs ?? [])
+                } else {
+                    Compare_Recommend(showCompareSheet: $showPerfumeSelectSheet, currentPerfumeID: vm.secondID, toComparePerfumeID: $vm.firstID, perfumeData: vm.recommendedPerfumeIDs ?? [])
+                    
+                }
+            }
+        }
+        // TODO: 비교할 향수 바뀌면 비교정보 호출하기
+        .onChange(of: vm.firstID) { oldValue, newValue in
+            // id로 비교향수정보 불러오기
+        }
+        .onChange(of: vm.secondID) { oldValue, newValue in
+            // id로 비교향수정보 불러오기
         }
     }
 }
 
 #Preview {
-    Compare()
+    Compare(compareType: .recommend)
 }
 
-// MARK: - Components
+// MARK: - Big Components
+extension Compare {
+    /// 경우의수 고려한 기본정보 컴포넌트
+    private var basicInfo: some View {
+        LazyVGrid(columns: columns, spacing: 50) {
+            // 1열
+            // 있으면 기본정보
+            if let firstPerfume = vm.first {
+                perfumeBasicInfo(imageURL: firstPerfume.imageURL, brand: firstPerfume.brand, title: firstPerfume.perfumeName, isFirst: true)
+            }
+            // 없으면 첫번째 향수 고르기 컴포넌트
+            else {
+                emptyBasicInfo(isFirst: true)
+            }
+            
+            // 2열
+            // 있으면 기본정보
+            if let secondPerfume = vm.second {
+                perfumeBasicInfo(imageURL: secondPerfume.imageURL, brand: secondPerfume.brand, title: secondPerfume.perfumeName, isFirst: false)
+            }
+            // 없으면 두번째 향수 고르기 컴포넌트
+            else {
+                emptyBasicInfo(isFirst: false)
+            }
+        }
+    }
+    
+    /// 경우의수 고려한 비쥬얼 컴포넌트 구역(가격/계절/성별/키워드)
+    private var visualInfo: some View {
+        LazyVGrid(columns: columns, spacing: 50) {
+            
+            // MARK: 가격정보
+            // 1열
+            if let first = vm.first {
+                priceComponent(isFirst: true, priceSet: first.price)
+            } else { EmptyView() }
+            
+            // 2열
+            if let second = vm.second {
+                priceComponent(isFirst: false, priceSet: second.price)
+            } else { EmptyView() }
+            
+            // MARK: 어울리는 계절
+            // 1열
+            if let first = vm.first {
+                seasonComponent(season: first.seasonCode)
+            } else { EmptyView() }
+            // 2열
+            if let second = vm.second {
+                seasonComponent(season: second.seasonCode)
+            } else { EmptyView() }
+            
+            // MARK: 성별
+            // 1열
+            if let first = vm.first {
+                genderComponent(gender: first.genderCode)
+            } else { EmptyView() }
+            // 2열
+            if let second = vm.second {
+                genderComponent(gender: second.genderCode)
+            } else { EmptyView() }
+            
+            // MARK: 대표 키워드
+            // 1열
+            if let first = vm.first {
+                keywordsComponent(keywords: first.keywords)
+            } else { EmptyView() }
+            // 2열
+            if let second = vm.second {
+                keywordsComponent(keywords: second.keywords)
+            } else { EmptyView() }
+        }
+    }
+    
+    private var textInfo: some View {
+        VStack(spacing: 50) {
+            // MARK: 설명
+            textInfoComponent(componentType: .desc)
+            
+            // MARK: 대표노트
+            textInfoComponent(componentType: .mainNotes)
+            
+            // MARK: 탑노트 설명
+            textInfoComponent(componentType: .topNote)
+            
+            // MARK: 미들노트 설명
+            textInfoComponent(componentType: .middleNote)
+            
+            // MARK: 베이스노트 설명
+            textInfoComponent(componentType: .baseNote)
+        }
+        .padding(.vertical, 50)
+        .padding(.horizontal, 15)
+    }
+}
+
+
+// MARK: - Small Components
 extension Compare {
     /// 향수 기본정보(브랜드, 제목)
-    private func perfumeBasicInfo(imageURL: String, brand: String, title: String) -> some View {
+    private func perfumeBasicInfo(imageURL: String, brand: String, title: String, isFirst: Bool) -> some View {
         VStack(alignment: .center, spacing: 3) {
             /// 계절별 향수 브랜드에 따라 이미지 크기 조정하기위한 변수
             var seasonPerfumeImageWidth: CGFloat {
@@ -96,21 +233,49 @@ extension Compare {
                 }
             }
             
-
+            // 향수 이미지
             URLImage(url: imageURL)
                 .frame(width: seasonPerfumeImageWidth, height: 160)
                 .clipped()
                 .padding(.bottom, 10)
             
+            // 브랜드명
             Text(brand)
                 .font(.body)
             
+            // 향수 제품명
             Text(title)
                 .font(.body)
                 .fontWeight(.semibold)
             
-            changeButton()
+            // 변경하기 버튼
+            changeButton(isFirst: isFirst)
                 .padding(.top, 10)
+        }
+    }
+    
+    /// 지정된 향수가 없을 때 향수 고르기 보여줄 컴포넌트
+    private func emptyBasicInfo(isFirst: Bool) -> some View {
+        VStack(alignment: .center, spacing: 10) {
+            // 더미 직사각형 이미지
+            Image(systemName: "rectangle.portrait.fill")
+                .resizable()
+                .frame(width: 64, height: 120)
+                .foregroundStyle(Color.unselected)
+            
+            // 향수 고르기 버튼
+            HStack(alignment: .center, spacing: 5) {
+                Text("향수 고르기")
+                    .font(.headline)
+                
+                Button {
+                    isFirstToChange = isFirst
+                    showPerfumeSelectSheet.toggle()
+                } label: {
+                    Image(systemName: "chevron.down")
+                        .foregroundStyle(Color.black)
+                }
+            }
         }
     }
     
@@ -119,13 +284,13 @@ extension Compare {
         VStack(alignment: .center, spacing: 15) {
             var index: Int {
                 get {
-                    isFirst ? selectedFirstVolumeIndex : selectedSecondVolumeIndex
+                    isFirst ? volumeIndexFirstSelected : volumeIndexSecondSelected
                 }
                 set(newIndex) {
                     if isFirst {
-                        selectedFirstVolumeIndex = newIndex
+                        volumeIndexFirstSelected = newIndex
                     } else {
-                        selectedSecondVolumeIndex = newIndex
+                        volumeIndexSecondSelected = newIndex
                     }
                 }
             }
@@ -159,10 +324,11 @@ extension Compare {
     }
     
     /// 변경하기 버튼
-    private func changeButton() -> some View {
-        // TODO: toCompareWith: ComparePerfumeInfo
+    private func changeButton(isFirst: Bool) -> some View {
         Button("변경하기") {
-            // TODO: 타입에 따라서 다른 sheet 띄우기
+            // 타입에 따라서 다른 sheet 띄우기
+            isFirstToChange = isFirst
+            showPerfumeSelectSheet.toggle()
         }
     }
     
@@ -207,40 +373,38 @@ extension Compare {
     }
     
     /// 텍스트 비교 컴포넌트
-    private func commonCompareComponent(componentType: Int) -> some View {
+    private func textInfoComponent(componentType: TextComponentType) -> some View {
         VStack(alignment: .leading, spacing: 5) {
             var title: String {
                 switch componentType {
-                case 0: return "설명"
-                case 1: return "향"
-                case 2: return "탑노트"
-                case 3: return "미들노트"
-                case 4: return "베이스노트"
-                default: return ""
+                case .desc: return "설명"
+                case .mainNotes: return "향"
+                case .topNote: return "탑노트"
+                case .middleNote: return "미들노트"
+                case .baseNote: return "베이스노트"
                 }
             }
             
-            // TODO: vm 정보 반영시키기
+            
+            /// 첫번째 열에 들어갈 텍스트 정보
             var firstText: String {
                 switch componentType {
-                case 0: return "부드러운 옷 소매를 걷으면 손목에서 날법한 따뜻하고 포근한 체취의 향기"
-                case 1: return "플로럴, 머스키, 우디"
-                case 2: return "과일향이 가득한 활기찬 향기"
-                case 3: return "과일향이 가득한 활기찬 향기"
-                case 4: return "과일향이 가득한 활기찬 향기"
-                default: return ""
+                case .desc: return vm.first?.perfumeDesc ?? ""
+                case .mainNotes: return vm.first?.mainNotes.joined(separator: ", ") ?? ""
+                case .topNote: return vm.first?.topNoteDesc ?? ""
+                case .middleNote: return vm.first?.middleNoteDesc ?? ""
+                case .baseNote: return vm.first?.baseNoteDesc ?? ""
                 }
             }
             
-            // TODO: vm 정보 반영시키기
+            /// 두번째 열에 들어갈 텍스트 정보
             var secondText: String {
                 switch componentType {
-                case 0: return "빳빳한 와이셔츠 위로 알싸한 주니퍼베리 안개가 스민, 시크한 긴장감의 런더리 향수"
-                case 1: return "로즈, 프루티, 시트러스"
-                case 2: return "톡 쏘는 매콤함과 상쾌한 시트러스의 생동감"
-                case 3: return "톡 쏘는 매콤함과 상쾌한 시트러스의 생동감"
-                case 4: return "톡 쏘는 매콤함과 상쾌한 시트러스의 생동감"
-                default: return ""
+                case .desc: return vm.second?.perfumeDesc ?? ""
+                case .mainNotes: return vm.second?.mainNotes.joined(separator: ", ") ?? ""
+                case .topNote: return vm.second?.topNoteDesc ?? ""
+                case .middleNote: return vm.second?.middleNoteDesc ?? ""
+                case .baseNote: return vm.second?.baseNoteDesc ?? ""
                 }
             }
             
@@ -250,13 +414,39 @@ extension Compare {
             Divider()
             
             HStack(spacing: 30) {
+                // 왼쪽 텍스트
                 Text(firstText)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                
+                // 오른쪽 텍스트
                 Text(secondText)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
         }
+    }
+    
+    /// 찜한 향수들을 비교해보세요 label
+    private var guideBoxLabel: some View {
+        Text("찜한 향수들을 비교해보세요")
+            .font(.headline)
+            .padding(40)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.white)
+                    .stroke(Color.black, lineWidth: 1)
+            )
+    }
+}
+
+extension Compare {
+    /// 텍스트 비교 항목
+    enum TextComponentType {
+        case desc
+        case mainNotes
+        case topNote
+        case middleNote
+        case baseNote
     }
 }
