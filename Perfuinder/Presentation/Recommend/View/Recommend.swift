@@ -38,16 +38,6 @@ struct Recommend: View {
                 compareButton
             }
             .background(Image("background"))
-//            .sheet(isPresented: $showCompareSheet) {
-//                // onDismiss
-//                // TODO: 선택된 향수 있으면 Compare로 2개 향수 넘기기
-//            } content: {
-//                Compare_Recommend(showCompareSheet: $showCompareSheet,
-//                                  currentPerfumeID: vm.data![selectedPageIndex].perfumeId,
-//                                  toComparePerfumeID: $vm.toComparePerfumeID,
-//                                  perfumeData: vm.data!)
-//            }
-
     }
 }
 
@@ -150,8 +140,11 @@ extension Recommend {
     private var compareButton: some View {
         VStack {
             NavigationLink {
-                // TODO: Compare에 현재 비교하기 선택한 id 전달하기
-                Compare(compareType: .recommend)
+                // Compare에 현재 비교하기 선택한 id & 추천받은 향수 ID 세트 전달하기
+                Compare(compareType: .recommend,
+                        firstID: self.vm.data?[selectedPageIndex].perfumeId,
+                        recommendedIDs: vm.getPerfumeIDs())
+                .toolbarRole(.editor)
             } label: {
                 Text("다른 향수와 비교하기")
                     .foregroundStyle(Color.black)

@@ -13,7 +13,7 @@ struct ComparePerfumeInfo {
     let imageURL: String
     let brand: String
     let perfumeName: String
-    let price: [PriceDTO]
+    let price: [PriceEntity]
     let seasonCode: SeasonCode
     let genderCode: GenderCode
     let keywords: [String]
@@ -25,7 +25,7 @@ struct ComparePerfumeInfo {
 }
 
 /// 용량별 가격
-struct PriceDTO: Codable {
+struct PriceEntity: Codable {
     let volume: Int
     let price: Int
 }

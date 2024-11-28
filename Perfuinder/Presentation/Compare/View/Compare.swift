@@ -48,6 +48,7 @@ struct Compare: View {
             // 하나라도 있으면 정보 보이는 Grid 보여주고
             if vm.first != nil || vm.second != nil {
                 visualInfo
+                    .padding(.top, 30)
             }
             // 아무것도 없으면 "찜한 향수들을 비교해보세요" 박스 보여주기
             else {
@@ -55,34 +56,6 @@ struct Compare: View {
                     .padding(.top, 80)
             }
             
-//            LazyVGrid(columns: columns, spacing: 50) {
-//                
-//                // MARK: 가격정보
-//                // first
-//                priceComponent(isFirst: true, priceSet: [PriceDTO(volume: 50, price: 265050), PriceDTO(volume: 100, price: 25000), PriceDTO(volume: 150, price: 285000)])
-//                // second
-//                priceComponent(isFirst: false, priceSet: [PriceDTO(volume: 50, price: 265050), PriceDTO(volume: 100, price: 25000)])
-//                
-//                // MARK: 어울리는 계절
-//                // first
-//                seasonComponent(season: .winter)
-//                // second
-//                seasonComponent(season: .winter)
-//                
-//                // MARK: 성별
-//                // first
-//                genderComponent(gender: .female)
-//                // second
-//                genderComponent(gender: .female)
-//                
-//                // MARK: 대표 키워드
-//                // first
-//                keywordsComponent(keywords: ["로맨틱", "우아함", "고급스러움"])
-//                // second
-//                keywordsComponent(keywords: ["로맨틱", "신선함"])
-//                
-//            }
-
             // 텍스트 정보들
             // 둘 중에 하나라도 있으면 보여주고, 없으면 그냥 아무것도 안띄우기
             if vm.first != nil || vm.second != nil {
@@ -96,21 +69,34 @@ struct Compare: View {
             if vm.compareType == .like {
                 
             } else if vm.compareType == .recommend {
-                // FIXME: 여기 바꿔야!
                 if isFirstToChange {
                     Compare_Recommend(showCompareSheet: $showPerfumeSelectSheet, currentPerfumeID: vm.firstID, toComparePerfumeID: $vm.secondID, perfumeData: vm.recommendedPerfumeIDs ?? [])
                 } else {
                     Compare_Recommend(showCompareSheet: $showPerfumeSelectSheet, currentPerfumeID: vm.secondID, toComparePerfumeID: $vm.firstID, perfumeData: vm.recommendedPerfumeIDs ?? [])
-                    
                 }
             }
         }
         // TODO: 비교할 향수 바뀌면 비교정보 호출하기
-        .onChange(of: vm.firstID) { oldValue, newValue in
+        // !!!: Compare_Register로 바꾼 다음에 다시 확인해봐야 함
+        .onChange(of: vm.firstID!) { previousID, newID in
             // id로 비교향수정보 불러오기
+            vm.getComparePerfume(isFirst: true, id: newID) { success in
+                if success {
+                    print("success: 1번향수 바꾸기 성공")
+                } else {
+                    print("fail: 1번향수 바꾸기 실패")
+                }
+            }
         }
-        .onChange(of: vm.secondID) { oldValue, newValue in
+        .onChange(of: vm.secondID!) { previousID, newID in
             // id로 비교향수정보 불러오기
+            vm.getComparePerfume(isFirst: false, id: newID) { success in
+                if success {
+                    print("success: 2번향수 바꾸기 성공")
+                } else {
+                    print("fail: 2번향수 바꾸기 실패")
+                }
+            }
         }
     }
 }
@@ -154,42 +140,42 @@ extension Compare {
             // 1열
             if let first = vm.first {
                 priceComponent(isFirst: true, priceSet: first.price)
-            } else { EmptyView() }
+            } else { Color.clear }
             
             // 2열
             if let second = vm.second {
                 priceComponent(isFirst: false, priceSet: second.price)
-            } else { EmptyView() }
+            } else { Color.clear }
             
             // MARK: 어울리는 계절
             // 1열
             if let first = vm.first {
                 seasonComponent(season: first.seasonCode)
-            } else { EmptyView() }
+            } else { Color.clear }
             // 2열
             if let second = vm.second {
                 seasonComponent(season: second.seasonCode)
-            } else { EmptyView() }
+            } else { Color.clear }
             
             // MARK: 성별
             // 1열
             if let first = vm.first {
                 genderComponent(gender: first.genderCode)
-            } else { EmptyView() }
+            } else { Color.clear }
             // 2열
             if let second = vm.second {
                 genderComponent(gender: second.genderCode)
-            } else { EmptyView() }
+            } else { Color.clear }
             
             // MARK: 대표 키워드
             // 1열
             if let first = vm.first {
                 keywordsComponent(keywords: first.keywords)
-            } else { EmptyView() }
+            } else { Color.clear }
             // 2열
             if let second = vm.second {
                 keywordsComponent(keywords: second.keywords)
-            } else { EmptyView() }
+            } else { Color.clear }
         }
     }
     
@@ -280,7 +266,7 @@ extension Compare {
     }
     
     /// 용량별 가격
-    private func priceComponent(isFirst: Bool, priceSet: [PriceDTO]) -> some View {
+    private func priceComponent(isFirst: Bool, priceSet: [PriceEntity]) -> some View {
         VStack(alignment: .center, spacing: 15) {
             var index: Int {
                 get {

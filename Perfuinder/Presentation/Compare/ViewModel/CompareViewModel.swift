@@ -42,10 +42,54 @@ class CompareViewModel: ObservableObject {
         // 호출될 때 ID가 있다면 그 ID대로 호출하기
         if let ID1 = firstID {
             // TODO: ID 활용해서 향수정보 불러오기
+            getComparePerfume(isFirst: true, id: ID1) { success in
+                // 실패처리
+            }
         }
         
         if let ID2 = secondID {
             // TODO: ID 활용해서 향수정보 불러오기
+            getComparePerfume(isFirst: false, id: ID2) { success in
+                // 실패처리
+            }
+        }
+    }
+    
+    /// 요청한 ID에 해당하는 향수의 비교하기 정보 받아오기
+    /// - isFirst: 왼쪽 향수인지 오른쪽 향수인지 여기서 받아서 데이터에 바로 입력해주기 위한 아규먼트
+    func getComparePerfume(isFirst: Bool, id: Int, completion: @escaping (Bool) -> Void) {
+        CompareAPI.shared.getComparePerfume(id: id) { response in
+            switch response {
+            case .success(let data):
+                // 성공 시, 서버에서 받은 향수 데이터 입력
+                if let data = data as? [ComparePerfumeDTO], let responsePerfumeData = data.first {
+                    // 1열 향수 정보 요청이었으면 첫번째 향수로 데이터 입력해주기
+                    if isFirst {
+                        self.first = responsePerfumeData.toEntity()
+                    }
+                    // 2열 향수 정보 요청이었으면 두번째 향수로,
+                    else {
+                        self.second = responsePerfumeData.toEntity()
+                    }
+                }
+                completion(true)
+                
+            case .requestErr(let message):
+                print("Request Err: \(message)")
+                completion(false)
+            case .pathErr:
+                print("Path Err")
+                completion(false)
+            case .serverErr(let message):
+                print("Server Err: \(message)")
+                completion(false)
+            case .networkFail(let message):
+                print("Network Err: \(message)")
+                completion(false)
+            case .unknown(let error):
+                print("Unknown Err: \(error)")
+                completion(false)
+            }
         }
     }
 }
