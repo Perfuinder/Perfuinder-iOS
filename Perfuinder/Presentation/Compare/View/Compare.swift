@@ -66,22 +66,18 @@ struct Compare: View {
         .navigationBarTitleDisplayMode(.large)
         // MARK: 비교할 향수 선택하는 sheet
         .sheet(isPresented: $showPerfumeSelectSheet) {
-            if vm.compareType == .like {
-                
-            } else if vm.compareType == .recommend {
-                if isFirstToChange {
-                    CompareSheet(showCompareSheet: $showPerfumeSelectSheet,
-                                 compareType: vm.compareType,
-                                 toComparePerfumeID: vm.secondID,
-                                 currentPerfumeID: $vm.firstID,
-                                 perfumeData: vm.recommendedPerfumeIDs ?? [])
-                } else {
-                    CompareSheet(showCompareSheet: $showPerfumeSelectSheet,
-                                 compareType: vm.compareType,
-                                 toComparePerfumeID: vm.firstID,
-                                 currentPerfumeID: $vm.secondID,
-                                 perfumeData: vm.recommendedPerfumeIDs ?? [])
-                }
+            if isFirstToChange {
+                CompareSheet(showCompareSheet: $showPerfumeSelectSheet,
+                             compareType: vm.compareType,
+                             toComparePerfumeID: vm.secondID,
+                             currentPerfumeID: $vm.firstID,
+                             perfumeData: vm.recommendedPerfumeIDs)
+            } else {
+                CompareSheet(showCompareSheet: $showPerfumeSelectSheet,
+                             compareType: vm.compareType,
+                             toComparePerfumeID: vm.firstID,
+                             currentPerfumeID: $vm.secondID,
+                             perfumeData: vm.recommendedPerfumeIDs)
             }
         }
         // TODO: 비교할 향수 바뀌면 비교정보 호출하기
@@ -110,7 +106,7 @@ struct Compare: View {
 }
 
 #Preview {
-    Compare(compareType: .recommend)
+    Compare(compareType: .like)
 }
 
 // MARK: - Big Components
@@ -145,15 +141,16 @@ extension Compare {
         LazyVGrid(columns: columns, spacing: 50) {
             
             // MARK: 가격정보
-            // 1열
-            if let first = vm.first {
-                priceComponent(isFirst: true, priceSet: first.price)
-            } else { Color.clear }
-            
-            // 2열
-            if let second = vm.second {
-                priceComponent(isFirst: false, priceSet: second.price)
-            } else { Color.clear }
+            // TODO: 데이터 입력하고 주석 풀기!
+//            // 1열
+//            if let first = vm.first {
+//                priceComponent(isFirst: true, priceSet: first.price)
+//            } else { Color.clear }
+//            
+//            // 2열
+//            if let second = vm.second {
+//                priceComponent(isFirst: false, priceSet: second.price)
+//            } else { Color.clear }
             
             // MARK: 어울리는 계절
             // 1열

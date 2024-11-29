@@ -10,12 +10,15 @@ import Alamofire
 
 /// 향수 찜 관련 Router
 enum FavoriteService {
+    case getFavoriteList
     case favoriteToggle(Int)
 }
 
 extension FavoriteService: TargetType {
     var method: HTTPMethod {
         switch self {
+        case .getFavoriteList:
+            return .get
         case .favoriteToggle:
             return .post
         }
@@ -23,6 +26,8 @@ extension FavoriteService: TargetType {
     
     var endPoint: String {
         switch self {
+        case .getFavoriteList:
+            return APIConstants.favoriteInfoURL
         case .favoriteToggle:
             return APIConstants.toggleFavorite
         }
@@ -30,6 +35,8 @@ extension FavoriteService: TargetType {
     
     var parameters: RequestParams {
         switch self {
+        case .getFavoriteList:
+            return .requestPlain
         case .favoriteToggle(let id):
             return .path(String(id))
         }
