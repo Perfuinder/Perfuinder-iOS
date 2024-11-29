@@ -39,4 +39,28 @@ class FavoriteAPI: BaseAPI {
             }
         }
     }
+    
+    /// 찜한 향수 정보 조회하기
+    func getFavoriteInfo(completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(FavoriteService.getFavoriteList).responseData { (response) in
+            switch response.result {
+            // 성공
+            case .success:
+                guard let statusCode = response.response?.statusCode
+                else {
+                    return
+                }
+                
+                guard let data = response.data
+                else {
+                    return
+                }
+                completion(self.judgeData(by: statusCode, data, [FavoritePerfumeDTO].self))
+                
+            // 실패
+            case .failure(let err):
+                completion(.networkFail(err.localizedDescription))
+            }
+        }
+    }
 }

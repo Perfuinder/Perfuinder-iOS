@@ -38,6 +38,18 @@ class RecommendViewModel: ObservableObject {
         }
     }
     
+    /// 데이터 id만 있는 배열
+    func getPerfumeIDs() -> [Int] {
+        if let perfumeData = data {
+            return perfumeData.map {
+                $0.perfumeId
+            }
+        } else {
+            return []
+        }
+    }
+    
+    // MARK: - API Calls
     /// 추천향수 탐색 API 호출
     func requestRecommend(request: CustomSearchRequest, completion: @escaping (Bool) -> Void) {
         CustomSearchAPI.shared.getRecommend(request: request) { response in

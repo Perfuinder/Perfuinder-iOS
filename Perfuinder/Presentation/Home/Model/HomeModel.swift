@@ -31,20 +31,4 @@ struct RandomBrandPerfume: Identifiable {
     let imageURL: String
 }
 
-// TODO: 전체적으로 사용하는 파일에다가 옮기기
-/// 계절코드
-enum SeasonCode: Int {
-    case spring
-    case summer
-    case fall
-    case winter
-    
-    var text: String {
-        switch self {
-        case .spring: return "봄"
-        case .summer: return "여름"
-        case .fall: return "가을"
-        case .winter: return "겨울"
-        }
-    }
-}
+
