@@ -23,38 +23,3 @@ struct ComparePerfumeInfo {
     let middleNoteDesc: String
     let baseNoteDesc: String
 }
-
-/// 용량별 가격
-struct PriceEntity: Codable {
-    let volume: Int
-    let price: Int
-}
-
-/// 성별코드
-enum GenderCode: Int {
-    case male
-    case female
-    case unisex
-    
-    var componentText: String {
-        switch self {
-        case .male:
-            "HIM"
-        case .female:
-            "HER"
-        case .unisex:
-            "UNI"
-        }
-    }
-    
-    var text: String {
-        switch self {
-        case .male:
-            "남성"
-        case .female:
-            "여성"
-        case .unisex:
-            "중성"
-        }
-    }
-}

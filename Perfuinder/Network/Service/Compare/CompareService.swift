@@ -11,12 +11,15 @@ import Alamofire
 /// 향수 비교하기 관련 Router
 enum CompareService {
     case getComparePerfume(Int)
+    case getCompareRecommendList(String)
 }
 
 extension CompareService: TargetType {
     var method: HTTPMethod {
         switch self {
         case .getComparePerfume:
+            return .get
+        case .getCompareRecommendList:
             return .get
         }
     }
@@ -25,6 +28,8 @@ extension CompareService: TargetType {
         switch self {
         case .getComparePerfume:
             return APIConstants.comparePerfumeURL
+        case .getCompareRecommendList:
+            return APIConstants.compareRecommendURL
         }
     }
     
@@ -32,6 +37,8 @@ extension CompareService: TargetType {
         switch self {
         case .getComparePerfume(let id):
             return .path(String(id))
+        case .getCompareRecommendList(let IDs):
+            return .path(IDs)
         }
     }
 }

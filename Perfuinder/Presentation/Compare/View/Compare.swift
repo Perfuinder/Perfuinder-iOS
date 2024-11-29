@@ -70,15 +70,23 @@ struct Compare: View {
                 
             } else if vm.compareType == .recommend {
                 if isFirstToChange {
-                    Compare_Recommend(showCompareSheet: $showPerfumeSelectSheet, currentPerfumeID: vm.firstID, toComparePerfumeID: $vm.secondID, perfumeData: vm.recommendedPerfumeIDs ?? [])
+                    CompareSheet(showCompareSheet: $showPerfumeSelectSheet,
+                                 compareType: vm.compareType,
+                                 toComparePerfumeID: vm.secondID,
+                                 currentPerfumeID: $vm.firstID,
+                                 perfumeData: vm.recommendedPerfumeIDs ?? [])
                 } else {
-                    Compare_Recommend(showCompareSheet: $showPerfumeSelectSheet, currentPerfumeID: vm.secondID, toComparePerfumeID: $vm.firstID, perfumeData: vm.recommendedPerfumeIDs ?? [])
+                    CompareSheet(showCompareSheet: $showPerfumeSelectSheet,
+                                 compareType: vm.compareType,
+                                 toComparePerfumeID: vm.firstID,
+                                 currentPerfumeID: $vm.secondID,
+                                 perfumeData: vm.recommendedPerfumeIDs ?? [])
                 }
             }
         }
         // TODO: 비교할 향수 바뀌면 비교정보 호출하기
         // !!!: Compare_Register로 바꾼 다음에 다시 확인해봐야 함
-        .onChange(of: vm.firstID!) { previousID, newID in
+        .onChange(of: vm.firstID ?? 0) { previousID, newID in
             // id로 비교향수정보 불러오기
             vm.getComparePerfume(isFirst: true, id: newID) { success in
                 if success {
@@ -88,7 +96,7 @@ struct Compare: View {
                 }
             }
         }
-        .onChange(of: vm.secondID!) { previousID, newID in
+        .onChange(of: vm.secondID ?? 0) { previousID, newID in
             // id로 비교향수정보 불러오기
             vm.getComparePerfume(isFirst: false, id: newID) { success in
                 if success {
