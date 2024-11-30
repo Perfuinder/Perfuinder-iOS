@@ -90,7 +90,7 @@ class CompareSheetViewModel: ObservableObject {
                 // 성공 시, 서버에서 받은 향수 데이터 입력
                 if let data = data as? [FavoritePerfumeDTO] {
                     self.data = data.map {
-                        $0.toEntity()
+                        $0.toCompareSheetEntity()
                     }
                 } else {
                     print("데이터 변환 실패")

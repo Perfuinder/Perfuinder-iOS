@@ -18,12 +18,22 @@ struct FavoritePerfumeDTO: Codable {
 }
 
 extension FavoritePerfumeDTO {
-    func toEntity() -> CompareSheetModel {
+    func toCompareSheetEntity() -> CompareSheetModel {
         return CompareSheetModel(perfumeID: self.perfumeId,
                                  brand: self.brand,
                                  perfumeName: self.perfumeName,
                                  imageUrl: self.imageUrl,
                                  tokens: self.keywords,
                                  perfumeDesc: self.perfumeDesc)
+    }
+    
+    func toMyPageEntity() -> MyPagePerfumeModel {
+        return MyPagePerfumeModel(isFavorite: true,
+                           perfumeId: self.perfumeId,
+                           brand: self.brand,
+                           perfumeName: self.perfumeName,
+                           imageUrl: self.imageUrl,
+                           keywords: self.keywords,
+                           perfumeDesc: self.perfumeDesc)
     }
 }

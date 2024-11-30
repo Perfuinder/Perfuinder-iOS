@@ -16,6 +16,7 @@ struct PureToken: View {
             .font(.footnote)
             .padding(.horizontal, 15)
             .padding(.vertical, 7)
+            .foregroundStyle(Color.black)
             .background(
                 RoundedRectangle(cornerRadius: 40)
                     .fill(Color.white)

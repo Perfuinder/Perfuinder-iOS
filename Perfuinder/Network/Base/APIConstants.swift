@@ -36,6 +36,9 @@ struct APIConstants {
     /// 개별향수정보조회 API
     static let perfumeInfoURL = "/perfumes"
     
+    /// 찜한향수 정보 조회 API
+    static let favoriteInfoURL = "/perfumes/favorites"
+    
     /// 향수 찜하기 상태 변경 API
     static let toggleFavorite = "/perfumes/favorites/"
 }
