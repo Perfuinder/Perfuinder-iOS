@@ -13,15 +13,27 @@ struct PerfumeInfo: View {
     /// 정보 요청할 향수 ID
     let perfumeID: Int
     
+    @StateObject var vm: PerfumeInfoViewModel
+    
+    init(perfumeID: Int) {
+        self.perfumeID = perfumeID
+        _vm = StateObject(wrappedValue: PerfumeInfoViewModel(id: perfumeID))
+    }
+    
     // MARK: - View
     var body: some View {
         VStack {
-            Text("PerfumeID: \(self.perfumeID)")
+            if let data = vm.data {
+                URLImage(url: data.imageUrl)
+                Text("어느 브랜드꺼? : \(data.brand)")
+            } else {
+                ProgressView()
+            }
         }
         .toolbarVisibility(.hidden, for: .tabBar)   // 탭바 안보이도록
     }
 }
 
 #Preview {
-    PerfumeInfo(perfumeID: 0)
+    PerfumeInfo(perfumeID: 1001)
 }

@@ -1,12 +1,12 @@
 //
-//  ComparePerfumeDTO.swift
+//  ComparePerfumeResponse.swift
 //  Perfuinder
 //
 //  Created by 석민솔 on 11/28/24.
 //
 
 // 향수 비교를 위한 정보 네트워킹용 DTO
-struct ComparePerfumeDTO: Codable {
+struct ComparePerfumeResponse: Codable {
     let perfumeId: Int
     let imageUrl: String
     let brand: String
@@ -26,10 +26,16 @@ struct ComparePerfumeDTO: Codable {
 struct PriceDTO: Codable {
     let volume: String
     let price: Int
+    
+    /// "V_" 붙어있는 volume String -> Int로 바꿔주는 함수
+    func toEntity() -> PriceEntity? {
+        let numberString = self.volume.replacingOccurrences(of: "V_", with: "")
+        return PriceEntity(volume: Int(numberString) ?? 0, price: price)
+    }
 }
 
 // functions
-extension ComparePerfumeDTO {
+extension ComparePerfumeResponse {
     func toEntity() -> ComparePerfumeInfo {
         
         return ComparePerfumeInfo(perfumeID: self.perfumeId,
@@ -48,20 +54,10 @@ extension ComparePerfumeDTO {
     }
     
     // Price DTO 변환 관련
-    /// "V_" 붙어있는 volume String -> Int로 바꿔주는 함수
-    func extractIntegerSimplified(from string: String) -> Int? {
-        let numberString = string.replacingOccurrences(of: "V_", with: "")
-        return Int(numberString)
-    }
-    
     /// DTO 배열 Entity 배열로 변환해주기
     func priceDTO2Entity(toChange dtos: [PriceDTO]) -> [PriceEntity] {
         return dtos.compactMap { dto in
-            guard let volumeInt = extractIntegerSimplified(from: dto.volume) else {
-                return nil // 변환 실패 시 해당 요소를 제외
-            }
-            return PriceEntity(volume: volumeInt, price: dto.price)
+            return dto.toEntity()
         }
-
     }
 }

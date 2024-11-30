@@ -34,7 +34,7 @@ struct APIConstants {
     static let compareRecommendURL = "/perfumes/compare/recommend/"
     
     /// 개별향수정보조회 API
-    static let perfumeInfoURL = "/perfumes"
+    static let perfumeInfoURL = "/perfumes/"
     
     /// 찜한향수 정보 조회 API
     static let favoriteInfoURL = "/perfumes/favorites"

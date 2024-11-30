@@ -31,7 +31,7 @@ class CompareAPI: BaseAPI {
                 else {
                     return
                 }
-                completion(self.judgeData(by: statusCode, data, [ComparePerfumeDTO].self))
+                completion(self.judgeData(by: statusCode, data, [ComparePerfumeResponse].self))
                 
             // 실패
             case .failure(let err):

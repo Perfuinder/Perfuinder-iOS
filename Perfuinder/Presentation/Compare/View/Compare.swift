@@ -155,21 +155,21 @@ extension Compare {
             // MARK: 어울리는 계절
             // 1열
             if let first = vm.first {
-                seasonComponent(season: first.seasonCode)
+                SeasonComponent(season: first.seasonCode)
             } else { Color.clear }
             // 2열
             if let second = vm.second {
-                seasonComponent(season: second.seasonCode)
+                SeasonComponent(season: second.seasonCode)
             } else { Color.clear }
             
             // MARK: 성별
             // 1열
             if let first = vm.first {
-                genderComponent(gender: first.genderCode)
+                GenderComponent(gender: first.genderCode)
             } else { Color.clear }
             // 2열
             if let second = vm.second {
-                genderComponent(gender: second.genderCode)
+                GenderComponent(gender: second.genderCode)
             } else { Color.clear }
             
             // MARK: 대표 키워드
@@ -323,35 +323,6 @@ extension Compare {
         }
     }
     
-    /// 성별 컴포넌트
-    private func genderComponent(gender: GenderCode) -> some View {
-        VStack(alignment: .center, spacing: 0) {
-            Text(gender.componentText)
-                .font(
-                    Font.custom("SF Pro Rounded", size: 60)
-                        .weight(.bold)
-                )
-                .fontWeight(.bold)
-                .fontDesign(.rounded)
-            
-            Text(gender.text)
-                .font(.body)
-                
-        }
-    }
-    
-    /// 계절별 컴포넌트
-    private func seasonComponent(season: SeasonCode) -> some View {
-        VStack(alignment: .center, spacing: 15) {
-            Image(systemName: season.image)
-                .resizable()
-                .scaledToFit()
-                .frame(height: 60)
-            
-            Text(season.text)
-                .font(.body)
-        }
-    }
     
     /// 대표 키워드 컴포넌트
     private func keywordsComponent(keywords: [String]) -> some View {

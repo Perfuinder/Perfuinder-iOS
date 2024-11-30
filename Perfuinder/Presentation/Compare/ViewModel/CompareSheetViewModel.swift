@@ -54,7 +54,7 @@ class CompareSheetViewModel: ObservableObject {
             switch response {
             case .success(let data):
                 // 성공 시, 서버에서 받은 향수 데이터 입력
-                if let data = data as? [CompareRecommendPerfumeDTO] {
+                if let data = data as? [CompareRecommendPerfumeResponse] {
                     self.data = data.map {
                         $0.toEntity()
                     }
@@ -88,7 +88,7 @@ class CompareSheetViewModel: ObservableObject {
             switch response {
             case .success(let data):
                 // 성공 시, 서버에서 받은 향수 데이터 입력
-                if let data = data as? [FavoritePerfumeDTO] {
+                if let data = data as? [FavoritePerfumeResponse] {
                     self.data = data.map {
                         $0.toCompareSheetEntity()
                     }

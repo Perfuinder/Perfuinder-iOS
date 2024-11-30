@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: CompareRecommendPerfumeDTO
+// MARK: CompareRecommendPerfumeResponse
 /// 비교하기 향수 추천 조회용 DTO
-struct CompareRecommendPerfumeDTO: Codable {
+struct CompareRecommendPerfumeResponse: Codable {
     let perfumeId: Int
     let brand: String
     let perfumeName: String
@@ -18,7 +18,7 @@ struct CompareRecommendPerfumeDTO: Codable {
     let perfumeDesc: String
 }
 
-extension CompareRecommendPerfumeDTO {
+extension CompareRecommendPerfumeResponse {
     func toEntity() -> CompareSheetModel {
         return CompareSheetModel(perfumeID: self.perfumeId,
                                  brand: self.brand,

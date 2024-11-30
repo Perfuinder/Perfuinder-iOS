@@ -1,24 +1,24 @@
 //
-//  CompareSheetAPI.swift
+//  InfoAPI.swift
 //  Perfuinder
 //
-//  Created by 석민솔 on 11/29/24.
+//  Created by 석민솔 on 12/1/24.
 //
 
 import Foundation
 import Alamofire
 
-/// 비교용 향수 선택을 위한 정보 요청 API
-class CompareSheetAPI: BaseAPI {
-    static let shared = CompareSheetAPI()
+/// 향수 상세 정보 조회 API
+class PerfumeInfoAPI: BaseAPI {
+    static let shared = PerfumeInfoAPI()
     
     private override init() {
         super.init()
     }
     
-    /// 검색정보 주고 추천향수 받기
-    func getRecommendPerfumeInfo(idList: String, completion: @escaping (NetworkResult<Any>) -> (Void)) {
-        AFManager.request(CompareService.getCompareRecommendList(idList)).responseData { (response) in
+    /// id에 해당하는 향수의 상세정보 받기
+    func getPerfumeInfo(id: Int, completion: @escaping (NetworkResult<Any>) -> (Void)) {
+        AFManager.request(PerfumeInfoService.getPerfumeInfo(id)).responseData { (response) in
             switch response.result {
             // 성공
             case .success:
@@ -31,7 +31,7 @@ class CompareSheetAPI: BaseAPI {
                 else {
                     return
                 }
-                completion(self.judgeData(by: statusCode, data, [CompareRecommendPerfumeResponse].self))
+                completion(self.judgeData(by: statusCode, data, PerfumeInfoResponse.self))
                 
             // 실패
             case .failure(let err):
@@ -39,7 +39,4 @@ class CompareSheetAPI: BaseAPI {
             }
         }
     }
-    
-    // TODO: 찜한 향수들 리스트용 정보 요청하기
 }
-
