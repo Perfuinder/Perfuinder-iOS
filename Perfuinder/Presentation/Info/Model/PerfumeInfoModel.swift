@@ -18,7 +18,7 @@ struct PerfumeInfoModel {
     let mainNotes: [String]
     let notes: [InfoNoteModel]
     let celebrityDTO: [CelebrityDTO]
-    let isFavorite: Bool
+    var isFavorite: Bool
 }
 
 /// 탑/미들/베이스 정보

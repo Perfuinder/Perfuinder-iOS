@@ -9,16 +9,12 @@ import SwiftUI
 
 /// 개별 향수 정보
 struct PerfumeInfo: View {
-    // MARK: - Properties
-    /// 정보 요청할 향수 ID
-    let perfumeID: Int
-    
+    // MARK: - Properties    
     /// 뷰모델
     @StateObject var vm: PerfumeInfoViewModel
     
     // MARK: - Initializer
     init(perfumeID: Int) {
-        self.perfumeID = perfumeID
         _vm = StateObject(wrappedValue: PerfumeInfoViewModel(id: perfumeID))
     }
     
@@ -71,7 +67,8 @@ struct PerfumeInfo: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    // TODO: 찜하기 상태변경 API 호출
+                    // 찜하기 상태변경 API 호출
+                    vm.toggleFavorite()
                 } label: {
                     Image(vm.data?.isFavorite ?? false ? "heart-fill" : "heart-empty")
                         .resizable()
