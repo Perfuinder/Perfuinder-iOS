@@ -36,4 +36,15 @@ enum NoteTypeCode: Int {
     case middle
     /// 베이스노트: 2
     case base
+    
+    var text: String {
+        switch self {
+        case .top:
+            "탑노트"
+        case .middle:
+            "미들노트"
+        case .base:
+            "베이스노트"
+        }
+    }
 }

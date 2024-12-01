@@ -9,9 +9,14 @@ import Foundation
 
 /// 개별 향수 정보를 위한 뷰모델
 class PerfumeInfoViewModel: ObservableObject {
+    // MARK: Properties
     /// 향수 정보
     @Published var data: PerfumeInfoModel?
     
+    /// 몇번째 용량의 가격 선택되었는지 확인하는 변수
+    @Published var selectedPriceIndex: Int = 0
+    
+    // MARK: Initializer
     /// vm 생성할 때 정보 받아서 data에 입력하기
     init(id: Int) {
         getPerfumeInfo(id: id) { success in
@@ -21,6 +26,7 @@ class PerfumeInfoViewModel: ObservableObject {
         }
     }
     
+    // MARK: Methods
     /// id로 향수 정보 받기
     func getPerfumeInfo(id: Int, completion: @escaping (Bool) -> Void) {
         PerfumeInfoAPI.shared.getPerfumeInfo(id: id) { response in

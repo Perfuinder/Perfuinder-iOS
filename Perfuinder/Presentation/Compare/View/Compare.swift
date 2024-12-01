@@ -141,16 +141,17 @@ extension Compare {
         LazyVGrid(columns: columns, spacing: 50) {
             
             // MARK: 가격정보
-            // TODO: 데이터 입력하고 주석 풀기!
-//            // 1열
-//            if let first = vm.first {
-//                priceComponent(isFirst: true, priceSet: first.price)
-//            } else { Color.clear }
-//            
-//            // 2열
-//            if let second = vm.second {
-//                priceComponent(isFirst: false, priceSet: second.price)
-//            } else { Color.clear }
+            if let first = vm.first, !first.price.isEmpty {
+                // 1열
+                priceComponent(isFirst: true, priceSet: first.price)
+                
+            } else { Color.clear }
+            
+            // 2열
+            if let second = vm.second, !second.price.isEmpty {
+                priceComponent(isFirst: false, priceSet: second.price)
+            } else { Color.clear }
+
             
             // MARK: 어울리는 계절
             // 1열
@@ -255,17 +256,18 @@ extension Compare {
                 .foregroundStyle(Color.unselected)
             
             // 향수 고르기 버튼
-            HStack(alignment: .center, spacing: 5) {
-                Text("향수 고르기")
-                    .font(.headline)
-                
-                Button {
-                    isFirstToChange = isFirst
-                    showPerfumeSelectSheet.toggle()
-                } label: {
+            Button {
+                isFirstToChange = isFirst
+                showPerfumeSelectSheet.toggle()
+            } label: {
+                HStack(alignment: .center, spacing: 5) {
+                    Text("향수 고르기")
+                        .font(.headline)
+                    
+                    
                     Image(systemName: "chevron.down")
-                        .foregroundStyle(Color.black)
                 }
+                .foregroundStyle(Color.black)
             }
         }
     }
