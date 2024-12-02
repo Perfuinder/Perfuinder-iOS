@@ -1,5 +1,5 @@
 //
-//  FavoritePerfumeDTO.swift
+//  FavoritePerfumeResponse.swift
 //  Perfuinder
 //
 //  Created by 석민솔 on 11/30/24.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// 찜한향수 정보 조회용 DTO
-struct FavoritePerfumeDTO: Codable {
+struct FavoritePerfumeResponse: Codable {
     let perfumeId: Int
     let brand: String
     let perfumeName: String
@@ -17,7 +17,7 @@ struct FavoritePerfumeDTO: Codable {
     let perfumeDesc: String
 }
 
-extension FavoritePerfumeDTO {
+extension FavoritePerfumeResponse {
     func toCompareSheetEntity() -> CompareSheetModel {
         return CompareSheetModel(perfumeID: self.perfumeId,
                                  brand: self.brand,

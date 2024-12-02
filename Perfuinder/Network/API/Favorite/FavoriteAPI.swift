@@ -55,7 +55,7 @@ class FavoriteAPI: BaseAPI {
                 else {
                     return
                 }
-                completion(self.judgeData(by: statusCode, data, [FavoritePerfumeDTO].self))
+                completion(self.judgeData(by: statusCode, data, [FavoritePerfumeResponse].self))
                 
             // 실패
             case .failure(let err):

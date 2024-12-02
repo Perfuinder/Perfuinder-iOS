@@ -62,7 +62,7 @@ class CompareViewModel: ObservableObject {
             switch response {
             case .success(let data):
                 // 성공 시, 서버에서 받은 향수 데이터 입력
-                if let data = data as? [ComparePerfumeDTO], let responsePerfumeData = data.first {
+                if let data = data as? [ComparePerfumeResponse], let responsePerfumeData = data.first {
                     // 1열 향수 정보 요청이었으면 첫번째 향수로 데이터 입력해주기
                     if isFirst {
                         self.first = responsePerfumeData.toEntity()
