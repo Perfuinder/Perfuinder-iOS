@@ -296,7 +296,17 @@ extension Compare {
                         }
                 }
             }
-            Text("\(priceSet[index].price)원")
+            
+            HStack(alignment: .bottom, spacing: 0) {
+                Text("\(priceSet[index].price)")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .fontDesign(.rounded)
+                    .foregroundStyle(Color.black)
+                
+                Text("원")
+                    .foregroundStyle(Color.black)
+            }
         }
     }
     
@@ -305,6 +315,7 @@ extension Compare {
         VStack {
             Text("\(volume)ml")
                 .font(.caption)
+                .fontWeight(selected ? .medium : .regular)
                 .fontDesign(.rounded)
                 .foregroundStyle(selected ? Color.white : Color.black)
                 .padding(.vertical, 8)
