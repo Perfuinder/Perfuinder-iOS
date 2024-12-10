@@ -66,19 +66,11 @@ struct Compare: View {
         .navigationBarTitleDisplayMode(.large)
         // MARK: 비교할 향수 선택하는 sheet
         .sheet(isPresented: $showPerfumeSelectSheet) {
-            if isFirstToChange {
-                CompareSheet(showCompareSheet: $showPerfumeSelectSheet,
-                             compareType: vm.compareType,
-                             toComparePerfumeID: vm.secondID,
-                             currentPerfumeID: $vm.firstID,
-                             perfumeData: vm.recommendedPerfumeIDs)
-            } else {
-                CompareSheet(showCompareSheet: $showPerfumeSelectSheet,
-                             compareType: vm.compareType,
-                             toComparePerfumeID: vm.firstID,
-                             currentPerfumeID: $vm.secondID,
-                             perfumeData: vm.recommendedPerfumeIDs)
-            }
+            CompareSheetContainer(
+                isFirstToChange: $isFirstToChange,
+                showCompareSheet: $showPerfumeSelectSheet,
+                vm: vm
+            )
         }
         // TODO: 비교할 향수 바뀌면 비교정보 호출하기
         // !!!: Compare_Register로 바꾼 다음에 다시 확인해봐야 함
@@ -256,19 +248,25 @@ extension Compare {
                 .foregroundStyle(Color.unselected)
             
             // 향수 고르기 버튼
-            Button {
-                isFirstToChange = isFirst
-                showPerfumeSelectSheet.toggle()
-            } label: {
-                HStack(alignment: .center, spacing: 5) {
-                    Text("향수 고르기")
-                        .font(.headline)
-                    
-                    
-                    Image(systemName: "chevron.down")
-                }
-                .foregroundStyle(Color.black)
+            choosePerfumeButton(isFirst: isFirst)
+        }
+    }
+    
+    /// 향수 고르기 버튼
+    private func choosePerfumeButton(isFirst: Bool) -> some View {
+        Button {
+            print("이전 isFirstToChange: \(isFirstToChange)")
+            isFirstToChange = isFirst
+            print("변경된 isFirstToChange: \(isFirstToChange)")
+            showPerfumeSelectSheet.toggle()
+        } label: {
+            HStack(alignment: .center, spacing: 5) {
+                Text("향수 고르기")
+                    .font(.headline)
+                
+                Image(systemName: "chevron.down")
             }
+            .foregroundStyle(Color.black)
         }
     }
     
@@ -296,7 +294,17 @@ extension Compare {
                         }
                 }
             }
-            Text("\(priceSet[index].price)원")
+            
+            HStack(alignment: .bottom, spacing: 0) {
+                Text("\(priceSet[index].price)")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .fontDesign(.rounded)
+                    .foregroundStyle(Color.black)
+                
+                Text("원")
+                    .foregroundStyle(Color.black)
+            }
         }
     }
     
@@ -305,6 +313,7 @@ extension Compare {
         VStack {
             Text("\(volume)ml")
                 .font(.caption)
+                .fontWeight(selected ? .medium : .regular)
                 .fontDesign(.rounded)
                 .foregroundStyle(selected ? Color.white : Color.black)
                 .padding(.vertical, 8)
@@ -412,5 +421,23 @@ extension Compare {
         case topNote
         case middleNote
         case baseNote
+    }
+}
+
+/// isFirstToChange를 sheet에 제대로 반영하기 위한 컨테이너
+struct CompareSheetContainer: View {
+    @Binding var isFirstToChange: Bool
+    @Binding var showCompareSheet: Bool
+    @ObservedObject var vm: CompareViewModel
+    
+    
+    var body: some View {
+        CompareSheet(
+            showCompareSheet: $showCompareSheet,
+            compareType: vm.compareType,
+            toComparePerfumeID: isFirstToChange ? vm.secondID : vm.firstID,
+            currentPerfumeID: isFirstToChange ? $vm.firstID : $vm.secondID,
+            perfumeData: vm.recommendedPerfumeIDs
+        )
     }
 }
