@@ -375,7 +375,7 @@ extension CustomSearch {
     /// 향수 찾기 버튼
     private var searchButton: some View {
         NavigationLink {
-            // TODO: API 결과 추천받은 향수 리스트 Recommend 화면으로 넘기기
+            // API 결과 추천받은 향수 리스트 Recommend 화면으로 넘기기
             Recommend(searchBody: vm.makeRequestDTO())
                 .toolbarRole(.editor)
         } label: {
